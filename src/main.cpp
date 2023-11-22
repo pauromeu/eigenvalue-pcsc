@@ -1,5 +1,5 @@
 #include <iostream>
-#include "greetings.h"
+#include "Greeter.h"
 
 int main()
 {
@@ -7,6 +7,8 @@ int main()
     std::cout << "Enter your name: ";
     std::getline(std::cin, name);
 
-    std::cout << getGreeting(name) << std::endl;
+    Greeter greeter(name);
+    std::cout << greeter.sayHello() << std::endl;
+
     return 0;
 }
