@@ -1,4 +1,25 @@
-# Eigenvalue problems solver
+# Eigenvalue Computation Project
+
+## Introduction
+This project is dedicated to the implementation of numerical methods for eigenvalue computation. It targets matrices `A` and focuses on finding all scalars `λ` (eigenvalues) that satisfy the equation:
+
+$$ Ax = \lambda x $$
+
+## Features
+The project includes the following key features:
+
+1. **Power Method**: 
+   - This method is used to find the dominant eigenvalue of a matrix.
+
+2. **Inverse Power Method**:
+   - A technique for finding the smallest eigenvalue of a matrix.
+
+3. **Power and Inverse Power Methods with Shift**:
+   - An enhancement of the basic methods, incorporating a shift to accelerate convergence.
+
+4. **QR Method**:
+   - An algorithm to compute all eigenvalues of a matrix by decomposing it into a product of an orthogonal matrix `Q` and an upper triangular matrix `R`.
+
 
 ## Building the Project
 
