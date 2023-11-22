@@ -53,3 +53,27 @@ Before building, ensure you have the following installed:
    ```bash
     ./Eigenvalue-PCSC-tests
    ```
+## Generating Documentation
+
+To generate the project's documentation, follow these steps:
+
+### Prerequisites
+Ensure you have Doxygen installed:
+- For installation instructions, visit [Doxygen's official website](http://www.doxygen.nl/download.html).
+
+### Generating the Docs
+1. **Navigate to the Documentation Directory**:
+   If your Doxygen configuration file (`Doxyfile`) is located in a specific directory (e.g., `docs`), navigate to that directory:
+   ```bash
+   cd docs
+   ```
+2. **Run Doxygen**:
+   Execute the following command to generate the documentation:
+   ```bash
+   doxygen Doxyfile
+   ```
+
+3. **Accessing the Documentation**:
+   - After successful generation, the documentation will be available in the directory specified in the `OUTPUT_DIRECTORY` of your Doxyfile.
+   - If no output directory is specified, it will be in the same directory as your Doxyfile.
+   - Open the `index.html` file in a web browser to view the documentation.
