@@ -20,6 +20,19 @@ The project includes the following key features:
 4. **QR Method**:
    - An algorithm to compute all eigenvalues of a matrix by decomposing it into a product of an orthogonal matrix `Q` and an upper triangular matrix `R`.
 
+## Cloning the repository
+
+When cloning the repository to a new location, you should initialize and fetch the submodules:
+
+```bash
+git clone --recursive https://github.com/pauromeu/eigenvalue-pcsc.git
+```
+
+Or, if the repository is already cloned:
+
+```bash
+git submodule update --init --recursive
+```
 
 ## Building the Project
 
