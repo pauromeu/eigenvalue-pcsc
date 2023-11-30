@@ -9,7 +9,8 @@
  *
  * Greeter generates a greeting message that includes a specified name.
  */
-class Greeter {
+class Greeter
+{
 public:
     /**
      * @brief Construct a new Greeter object.
@@ -17,7 +18,7 @@ public:
      * Initializes the Greeter with a given name.
      * @param name The name to be used in the greeting.
      */
-    Greeter(const std::string& name);
+    Greeter(const std::string &name);
 
     /**
      * @brief Generate a greeting message.
