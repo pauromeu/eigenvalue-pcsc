@@ -23,6 +23,14 @@ int main()
 
     auto matrix = reader.getDenseMatrix();
 
+    // Compute eigenvalues of the matrix
+    Eigen::EigenSolver<Eigen::MatrixXd> es(matrix);
+
+    Eigen::VectorXcd eigenvalues = es.eigenvalues();
+
+    std::cout << "Eigenvalues: " << std::endl;
+    std::cout << eigenvalues << std::endl;
+
     // Print matrix
     std::cout << matrix << std::endl;
 }
