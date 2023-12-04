@@ -1,36 +1,32 @@
 #include <iostream>
 #include "Greeter.h"
 #include "matrix_readers/MTXMatrixReader.h"
+#include <algorithms/QRMethod.h>
 
 int main()
 {
-    // Ask name to user
-    std::string name;
-    std::cout << "Enter your name: ";
-    std::cin >> name;
-    Greeter greeter(name);
-    std::cout << greeter.sayHello() << std::endl;
-
-    // Aske user name of matrix to laod
-    std::string matrixName;
-    std::cout << "Enter matrix name: ";
-    std::cin >> matrixName;
-
     // Load matrix
-    MTXMatrixReader reader = MTXMatrixReader("data/matrix/" + matrixName + ".mtx");
+    MTXMatrixReader reader = MTXMatrixReader("data/matrix/can_24.mtx");
 
     reader.readMatrix();
 
-    auto matrix = reader.getDenseMatrix();
+    Eigen::MatrixXd matrix = reader.getDenseMatrix();
 
-    // Compute eigenvalues of the matrix
-    Eigen::EigenSolver<Eigen::MatrixXd> es(matrix);
+    // Compute eigenvalues using QR method
+    using Scalar = double;
 
-    Eigen::VectorXcd eigenvalues = es.eigenvalues();
+    QRMethod<Scalar> qrMethod;
 
-    std::cout << "Eigenvalues: " << std::endl;
-    std::cout << eigenvalues << std::endl;
+    qrMethod.setMatrix(matrix);
 
-    // Print matrix
-    std::cout << matrix << std::endl;
+    qrMethod.solve();
+
+    std::cout << "Eigenvalues QR: " << std::endl;
+    std::cout << qrMethod.getEigenvalues().transpose() << std::endl;
+
+    // Compute eigenvalues of the matrix with eigen to chek the results
+    Eigen::EigenSolver<Eigen::MatrixXd> eigenSolver(matrix);
+
+    std::cout << "Eigenvalues Eigen: " << std::endl;
+    std::cout << eigenSolver.eigenvalues().transpose() << std::endl;
 }
