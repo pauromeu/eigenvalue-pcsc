@@ -14,11 +14,7 @@ add_subdirectory(extern/eigen)
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 # Create the main executable
-add_executable(Eigenvalue-PCSC ${SOURCES}
-        include/algorithms/AbstractPowerMethod.h
-        src/algorithms/AbstractPowerMethod.cpp
-        include/algorithms/PowerMethod.h
-        src/algorithms/PowerMethod.cpp)
+add_executable(Eigenvalue-PCSC ${SOURCES})
 target_include_directories(Eigenvalue-PCSC PRIVATE extern/eigen)
 
 # Google Test setup
@@ -31,8 +27,7 @@ file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp")
 list(APPEND TEST_SOURCES "src/Greeter.cpp")
 
 # Create the test executable
-add_executable(Eigenvalue-PCSC-tests ${TEST_SOURCES}
-        tests/algorithms/PowerMethod_test.cpp)
+add_executable(Eigenvalue-PCSC-tests ${TEST_SOURCES})
 target_link_libraries(Eigenvalue-PCSC-tests gtest_main)
 
 # Link Eigen library tests

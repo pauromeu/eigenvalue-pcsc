@@ -1,50 +1,50 @@
-//
-// Created by Tachi on 2023/12/2.
-//
 #include <gtest/gtest.h>
 #include <algorithms/PowerMethod.h>
-#include "algorithms/PowerMethod.h"
+#include <Eigen/Dense>
 
 // PowerMethod类的测试套件
 template <typename Scalar>
 class PowerMethodTest : public ::testing::Test {
 protected:
-    PowerMethod<Scalar> powerMethod; // PowerMethod实例
+    PowerMethod<Scalar> solver;
+    Eigen::MatrixX<Scalar> matrix;
+    Scalar tolerance;
+    int maxIterations;
 
     void SetUp() override {
-        // 如果需要，可以在这里进行初始化操作
-    }
+        // 设置测试中使用的矩阵、公差和最大迭代次数
+        matrix.resize(2, 2);
+        matrix << 2, 1,
+                1, 2;
+        tolerance = 1e-6;
+        maxIterations = 1000;
 
-    void TearDown() override {
-        // 清理代码（如果有的话）
+        solver.setMatrix(matrix);
+        solver.setTolerance(tolerance);
+        solver.setMaxIterations(maxIterations);
     }
 };
 
-// 定义要使用的数据类型
-using TestingTypes = ::testing::Types<float, double>;
-TYPED_TEST_SUITE(PowerMethodTest, TestingTypes);
+// 使用 double 和 float 类型实例化测试
+typedef ::testing::Types<double, float> Implementations;
+TYPED_TEST_SUITE(PowerMethodTest, Implementations);
 
-// 测试PowerMethod默认构造函数的行为
-TYPED_TEST(PowerMethodTest, DefaultConstructor) {
-    EXPECT_EQ(this->powerMethod.getMaxIterationsPublic(), 100);
-    EXPECT_NEAR(this->powerMethod.getTolerancePublic(), static_cast<TypeParam>(1e-6), static_cast<TypeParam>(1e-8));
+TYPED_TEST(PowerMethodTest, SolvesCorrectly) {
+    this->solver.solve();
+
+    // 获取结果
+    Eigen::MatrixX<TypeParam> eigenvectors = this->solver.getEigenvectors();
+    Eigen::VectorX<TypeParam> eigenvalues = this->solver.getEigenvalues();
+
+    // 验证特征值
+    ASSERT_NEAR(eigenvalues(0), 3.0, this->tolerance); // 假设已知的正确特征值
+
+    // 验证特征向量
+    // 注意：特征向量可以乘以任意标量，因此我们需要标准化向量以进行比较
+    eigenvectors.col(0).normalize();
+    Eigen::MatrixX<TypeParam> expectedVector(2, 1);
+    expectedVector << 1/sqrt(2), 1/sqrt(2);
+    for (int i = 0; i < eigenvectors.rows(); ++i) {
+        ASSERT_NEAR(eigenvectors(i, 0), expectedVector(i, 0), this->tolerance);
+    }
 }
-
-// 测试PowerMethod的solve方法
-TYPED_TEST(PowerMethodTest, SolveMethod) {
-    // 定义一个简单的矩阵，它的最大特征值是已知的
-    Eigen::MatrixX<TypeParam> testMatrix(2, 2);
-    testMatrix << 2, 0,
-            0, 1;
-
-    this->powerMethod.setMatrix(testMatrix);
-    this->powerMethod.solve();
-
-    // 获取计算出的最大特征值
-    auto computedEigenvalues = this->powerMethod.getEigenvalues();
-
-    // 验证算法是否能够正确地找到最大特征值
-    EXPECT_NEAR(computedEigenvalues[0], static_cast<TypeParam>(2), static_cast<TypeParam>(1e-6));
-}
-
-// 可以根据需要添加更多测试用例
