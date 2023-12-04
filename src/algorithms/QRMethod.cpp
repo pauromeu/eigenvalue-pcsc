@@ -1,49 +1,10 @@
+#include <iostream>
 #include "algorithms/QRMethod.h"
-#include <Eigen/Dense>
 
 template <typename Scalar>
-QRMethod<Scalar>::QRMethod(int maxIterations, Scalar tol)
-    : currentIteration(0), tolerance(tol)
+void QRMethod<Scalar>::setMatrix(const Eigen::MatrixX<Scalar> &matrix)
 {
-    this->maxIterations = maxIterations;
-}
-
-template <typename Scalar>
-void QRMethod<Scalar>::setMatrix(const Eigen::MatrixX<Scalar> &mat)
-{
-    matrix = mat;
-    this->eigenvalues.resize(matrix.rows());
-}
-
-template <typename Scalar>
-void QRMethod<Scalar>::solve()
-{
-    if (matrix.rows() != matrix.cols())
-    {
-        throw std::runtime_error("QR Method requires a square matrix.");
-    }
-    initialize();
-    while (!hasConverged() && currentIteration < this->maxIterations)
-    {
-        performIteration();
-    }
-}
-
-template <typename Scalar>
-bool QRMethod<Scalar>::hasConverged() const
-{
-    // Implement a convergence check. For example, check if the off-diagonal elements are close to zero.
-    // Placeholder for convergence check
-
-    return false;
-}
-
-template <typename Scalar>
-void QRMethod<Scalar>::performIteration()
-{
-    Eigen::HouseholderQR<Eigen::MatrixX<Scalar>> qr(matrix);
-    matrix = qr.matrixR() * qr.householderQ();
-    currentIteration++;
+    this->matrix = matrix;
 }
 
 template <typename Scalar>
@@ -52,6 +13,51 @@ void QRMethod<Scalar>::initialize()
     currentIteration = 0;
 }
 
-// Explicit template instantiation for double and std::complex<double>
-template class QRMethod<double>;
-template class QRMethod<std::complex<double>>;
+template <typename Scalar>
+void QRMethod<Scalar>::setMaxIterations(int maxIter)
+{
+    this->maxIterations = maxIter;
+}
+
+template <typename Scalar>
+void QRMethod<Scalar>::setTolerance(Scalar tol)
+{
+    this->tolerance = tol;
+}
+
+template <typename Scalar>
+bool QRMethod<Scalar>::hasConverged() const
+{
+    if (currentIteration >= maxIterations)
+    {
+        std::cout << "Warning: QR method did not converge after " << maxIterations << " iterations." << std::endl;
+        return true;
+    }
+
+    for (int i = 0; i < matrix.rows() - 1; ++i)
+    {
+        if (std::abs(matrix(i + 1, i)) > std::abs(tolerance))
+        {
+            return false;
+        }
+    }
+    std::cout << "QR method converged after " << currentIteration << " iterations." << std::endl;
+    return true;
+}
+
+template <typename Scalar>
+void QRMethod<Scalar>::performIteration()
+{
+    Eigen::HouseholderQR<Eigen::MatrixX<Scalar>> qr = matrix.householderQr();
+    Eigen::MatrixX<Scalar> Q = qr.householderQ();
+    Eigen::MatrixX<Scalar> R = qr.matrixQR().template triangularView<Eigen::Upper>();
+    matrix = R * Q;
+
+    currentIteration++;
+}
+
+template <typename Scalar>
+void QRMethod<Scalar>::obtainResults()
+{
+    this->eigenvalues = matrix.diagonal().template cast<std::complex<double>>();
+}
