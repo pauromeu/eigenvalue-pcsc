@@ -18,15 +18,7 @@ public:
     virtual void setMaxIterations(int maxIter) = 0;
     virtual void setTolerance(Scalar tol) = 0;
 
-    void solve()
-    {
-        initialize();
-        while (!hasConverged())
-        {
-            performIteration();
-        }
-        obtainResults();
-    }
+    virtual void solve() = 0;
 
     Eigen::VectorX<std::complex<double>> getEigenvalues() const { return eigenvalues; }
     Eigen::MatrixX<Scalar> getEigenvectors() const { return eigenvectors; }

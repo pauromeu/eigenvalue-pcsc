@@ -17,8 +17,13 @@ protected:
     virtual bool hasConverged() const override = 0;
     virtual void performIteration() override = 0;
     virtual void initialize() override = 0;
-
+    virtual void obtainResults() override = 0;
     Eigen::MatrixX<Scalar> currentVector;
+
+private:
+    Eigen::MatrixX<Scalar> matrix;
+    int maxIterations;
+    Scalar tolerance;
 };
 
 #endif // ABSTRACT_POWER_METHOD_H

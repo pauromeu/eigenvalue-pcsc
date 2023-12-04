@@ -35,7 +35,7 @@ public:
             ++currentIterations;
         } while (!this->hasConverged());
 
-        this->ObtainResults();
+        this->obtainResults();
     }
 
     Eigen::VectorX<Scalar> getEigenvalues() const  {
@@ -63,7 +63,7 @@ protected:
         previousVector = currentVector;
     }
 
-    void ObtainResults() {
+    void obtainResults() {
         Eigen::Matrix<Scalar, Eigen::Dynamic, 1> vectorizedCurrentVector = currentVector;
         Scalar eigenvalue = (matrixInverse * vectorizedCurrentVector).dot(vectorizedCurrentVector) / vectorizedCurrentVector.squaredNorm();
 

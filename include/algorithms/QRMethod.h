@@ -16,6 +16,16 @@ public:
     void setMaxIterations(int maxIter) override;
     void setTolerance(Scalar tol) override;
 
+    void solve() override
+    {
+        initialize();
+        while (!hasConverged())
+        {
+            performIteration();
+        }
+        obtainResults();
+    }
+
 protected:
     void initialize() override;
     bool hasConverged() const override;
