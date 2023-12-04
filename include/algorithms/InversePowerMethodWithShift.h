@@ -27,7 +27,7 @@ public:
         shift = sh;
     }
 
-    void solve() override {
+    void solve() {
         this->initialize();
         currentIterations = 0;
         do {
@@ -65,10 +65,8 @@ protected:
 
     void ObtainResults() {
         Eigen::Matrix<Scalar, Eigen::Dynamic, 1> vectorizedCurrentVector = currentVector;
-        // 使用位移后的逆矩阵计算特征值的倒数
         Scalar eigenvalue = (matrixInverse * vectorizedCurrentVector).dot(vectorizedCurrentVector) / vectorizedCurrentVector.squaredNorm();
 
-        // 将位移量加回到特征值的倒数上
         this->eigenvalues = Eigen::VectorX<Scalar>::Constant(1, 1.0 / eigenvalue + shift);
         this->eigenvectors = vectorizedCurrentVector;
     }
@@ -76,7 +74,7 @@ protected:
 
 private:
     Eigen::MatrixX<Scalar> matrix;
-    Eigen::MatrixX<Scalar> matrixInverse; // 位移后矩阵的逆
+    Eigen::MatrixX<Scalar> matrixInverse;
     Eigen::MatrixX<Scalar> shiftedMatrix;
     Eigen::MatrixX<Scalar> currentVector;
     Eigen::MatrixX<Scalar> previousVector;
@@ -84,7 +82,7 @@ private:
     Eigen::MatrixX<Scalar> eigenvectors;
     int maxIterations;
     int currentIterations;
-    Scalar shift; // 位移
+    Scalar shift;
     Scalar tolerance;
 };
 

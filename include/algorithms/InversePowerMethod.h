@@ -15,14 +15,14 @@ public:
 
     void setMatrix(const Eigen::MatrixX<Scalar>& mat){
         matrix = mat;
-        matrixInverse = matrix.inverse(); // 预计算逆矩阵
+        matrixInverse = matrix.inverse();
     }
 
     void setMaxIterations(int maxIter) {
         maxIterations = maxIter;
     }
 
-    void solve() override {
+    void solve() {
         this->initialize();
         currentIterations = 0;
 
@@ -61,16 +61,16 @@ protected:
 
     void ObtainResults(){
         Eigen::Matrix<Scalar, Eigen::Dynamic, 1> vectorizedCurrentVector = currentVector;
-        Scalar eigenvalue = (matrix * vectorizedCurrentVector).dot(vectorizedCurrentVector) / vectorizedCurrentVector.squaredNorm();
+        Scalar eigenvalue = (matrixInverse * vectorizedCurrentVector).dot(vectorizedCurrentVector) / vectorizedCurrentVector.squaredNorm();
 
-        this->eigenvalues = Eigen::VectorX<Scalar>::Constant(1, eigenvalue);
+        this->eigenvalues = Eigen::VectorX<Scalar>::Constant(1, 1 / eigenvalue);
         this->eigenvectors = vectorizedCurrentVector;
     }
 
 
 private:
     Eigen::MatrixX<Scalar> matrix;
-    Eigen::MatrixX<Scalar> matrixInverse; // 逆矩阵
+    Eigen::MatrixX<Scalar> matrixInverse;
     Eigen::MatrixX<Scalar> currentVector;
     Eigen::MatrixX<Scalar> previousVector;
     Eigen::VectorX<Scalar> eigenvalues;

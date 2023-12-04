@@ -14,11 +14,11 @@ public:
         shiftedMatrix = matrix - shift * Eigen::MatrixX<Scalar>::Identity(matrix.rows(), matrix.cols());
     }
 
-    void setTolerance(Scalar tol) override {
+    void setTolerance(Scalar tol){
         tolerance = tol;
     }
 
-    void setMaxIterations(int maxIter) override {
+    void setMaxIterations(int maxIter) {
         maxIterations = maxIter;
     }
 
@@ -26,7 +26,7 @@ public:
         shift = sh;
     }
 
-    void solve() override {
+    void solve() {
         this->initialize();
         currentIterations = 0;
 
@@ -67,24 +67,22 @@ protected:
 
     void ObtainResults() {
         Eigen::Matrix<Scalar, Eigen::Dynamic, 1> vectorizedCurrentVector = currentVector;
-        // 使用位移后的矩阵进行特征值计算
         Scalar eigenvalue = (shiftedMatrix * vectorizedCurrentVector).dot(vectorizedCurrentVector) / vectorizedCurrentVector.squaredNorm();
 
-        // 将位移量加回到特征值
         this->eigenvalues = Eigen::VectorX<Scalar>::Constant(1, eigenvalue + shift);
         this->eigenvectors = vectorizedCurrentVector;
     }
 
 private:
     Eigen::MatrixX<Scalar> matrix;
-    Eigen::MatrixX<Scalar> shiftedMatrix; // 位移后的矩阵
+    Eigen::MatrixX<Scalar> shiftedMatrix;
     Eigen::MatrixX<Scalar> currentVector;
     Eigen::MatrixX<Scalar> previousVector;
     Eigen::VectorX<Scalar> eigenvalues;
     Eigen::MatrixX<Scalar> eigenvectors;
     int maxIterations;
     int currentIterations;
-    Scalar shift; // 位移
+    Scalar shift;
     Scalar tolerance;
 };
 
