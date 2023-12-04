@@ -1,10 +1,10 @@
-#ifndef POWER_METHOD_WITH_SHIFT_H
-#define POWER_METHOD_WITH_SHIFT_H
+#ifndef INVERSE_POWER_METHOD_WITH_SHIFT_H
+#define INVERSE_POWER_METHOD_WITH_SHIFT_H
 
 #include "AbstractPowerMethod.h"
 
 template <typename Scalar>
-class PowerMethodWithShift : public AbstractPowerMethod<Scalar>
+class InversePowerMethodWithShift : public AbstractPowerMethod<Scalar>
 {
 public:
     using AbstractPowerMethod<Scalar>::AbstractPowerMethod;
@@ -12,13 +12,14 @@ public:
     void setMatrix(const Eigen::MatrixX<Scalar>& mat) {
         matrix = mat;
         shiftedMatrix = matrix - shift * Eigen::MatrixX<Scalar>::Identity(matrix.rows(), matrix.cols());
+        matrixInverse = shiftedMatrix.inverse();
     }
 
-    void setTolerance(Scalar tol) override {
+    void setTolerance(Scalar tol) {
         tolerance = tol;
     }
 
-    void setMaxIterations(int maxIter) override {
+    void setMaxIterations(int maxIter) {
         maxIterations = maxIter;
     }
 
@@ -29,7 +30,6 @@ public:
     void solve() override {
         this->initialize();
         currentIterations = 0;
-
         do {
             this->performIteration();
             ++currentIterations;
@@ -38,8 +38,7 @@ public:
         this->ObtainResults();
     }
 
-
-    Eigen::VectorX<Scalar> getEigenvalues() const {
+    Eigen::VectorX<Scalar> getEigenvalues() const  {
         return eigenvalues;
     }
 
@@ -48,36 +47,37 @@ public:
     }
 
 protected:
-    bool hasConverged() const{
+    bool hasConverged() const {
         Scalar diff = (previousVector - currentVector).norm();
-        return diff < this->tolerance || currentIterations >= this->maxIterations;
+        return diff < tolerance || currentIterations >= maxIterations;
     }
 
-    void performIteration(){
+    void performIteration() {
         previousVector = currentVector;
-        currentVector = shiftedMatrix * currentVector;
+        currentVector = matrixInverse * currentVector;
         currentVector.normalize();
     }
 
-
-    void initialize(){
+    void initialize()  {
         currentVector = Eigen::MatrixX<Scalar>::Random(matrix.rows(), 1);
         previousVector = currentVector;
     }
 
     void ObtainResults() {
         Eigen::Matrix<Scalar, Eigen::Dynamic, 1> vectorizedCurrentVector = currentVector;
-        // 使用位移后的矩阵进行特征值计算
-        Scalar eigenvalue = (shiftedMatrix * vectorizedCurrentVector).dot(vectorizedCurrentVector) / vectorizedCurrentVector.squaredNorm();
+        // 使用位移后的逆矩阵计算特征值的倒数
+        Scalar eigenvalue = (matrixInverse * vectorizedCurrentVector).dot(vectorizedCurrentVector) / vectorizedCurrentVector.squaredNorm();
 
-        // 将位移量加回到特征值
-        this->eigenvalues = Eigen::VectorX<Scalar>::Constant(1, eigenvalue + shift);
+        // 将位移量加回到特征值的倒数上
+        this->eigenvalues = Eigen::VectorX<Scalar>::Constant(1, 1.0 / eigenvalue + shift);
         this->eigenvectors = vectorizedCurrentVector;
     }
 
+
 private:
     Eigen::MatrixX<Scalar> matrix;
-    Eigen::MatrixX<Scalar> shiftedMatrix; // 位移后的矩阵
+    Eigen::MatrixX<Scalar> matrixInverse; // 位移后矩阵的逆
+    Eigen::MatrixX<Scalar> shiftedMatrix;
     Eigen::MatrixX<Scalar> currentVector;
     Eigen::MatrixX<Scalar> previousVector;
     Eigen::VectorX<Scalar> eigenvalues;
@@ -88,4 +88,4 @@ private:
     Scalar tolerance;
 };
 
-#endif // POWER_METHOD_WITH_SHIFT_H
+#endif // INVERSE_POWER_METHOD_WITH_SHIFT_H
