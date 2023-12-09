@@ -9,75 +9,28 @@ class InversePowerMethod : public AbstractPowerMethod<Scalar>
 public:
     using AbstractPowerMethod<Scalar>::AbstractPowerMethod;
 
-    void setTolerance(Scalar tol) {
-        tolerance = tol;
-    }
-
     void setMatrix(const Eigen::MatrixX<Scalar>& mat){
-        matrix = mat;
-        matrixInverse = matrix.inverse();
+        this->matrix = mat;
+        matrixInverse = this->matrix.inverse();
     }
 
-    void setMaxIterations(int maxIter) {
-        maxIterations = maxIter;
-    }
-
-    void solve() {
-        this->initialize();
-        currentIterations = 0;
-
-        do {
-            this->performIteration();
-            ++currentIterations;
-        } while (!this->hasConverged());
-
-        this->obtainResults();
-    }
-
-    Eigen::VectorX<Scalar> getEigenvalues() const {
-        return eigenvalues;
-    }
-
-    Eigen::MatrixX<Scalar> getEigenvectors() const {
-        return eigenvectors;
-    }
 
 protected:
-    bool hasConverged() const {
-        Scalar diff = (previousVector - currentVector).norm();
-        return diff < this->tolerance || currentIterations >= this->maxIterations;
-    }
+    Eigen::MatrixX<Scalar> matrixInverse;
 
     void performIteration(){
-        previousVector = currentVector;
-        currentVector = matrixInverse * currentVector;
-        currentVector.normalize();
-    }
-
-    void initialize(){
-        currentVector = Eigen::MatrixX<Scalar>::Random(matrix.rows(), 1);
-        previousVector = currentVector;
+        this->previousVector = this->currentVector;
+        this->currentVector = matrixInverse * this->currentVector;
+        this->currentVector.normalize();
     }
 
     void obtainResults(){
-        Eigen::Matrix<Scalar, Eigen::Dynamic, 1> vectorizedCurrentVector = currentVector;
+        Eigen::Matrix<Scalar, Eigen::Dynamic, 1> vectorizedCurrentVector = this->currentVector;
         Scalar eigenvalue = (matrixInverse * vectorizedCurrentVector).dot(vectorizedCurrentVector) / vectorizedCurrentVector.squaredNorm();
 
         this->eigenvalues = Eigen::VectorX<Scalar>::Constant(1, 1 / eigenvalue);
         this->eigenvectors = vectorizedCurrentVector;
     }
-
-
-private:
-    Eigen::MatrixX<Scalar> matrix;
-    Eigen::MatrixX<Scalar> matrixInverse;
-    Eigen::MatrixX<Scalar> currentVector;
-    Eigen::MatrixX<Scalar> previousVector;
-    Eigen::VectorX<Scalar> eigenvalues;
-    Eigen::MatrixX<Scalar> eigenvectors;
-    int maxIterations;
-    int currentIterations;
-    Scalar tolerance;
 };
 
 #endif // INVERSE_POWER_METHOD_H
