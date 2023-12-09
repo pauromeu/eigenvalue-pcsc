@@ -41,3 +41,21 @@ TYPED_TEST(InversePowerMethodTest, SolvesCorrectly) {
     TypeParam cosSim = actualVector.normalized().dot(expectedVector.normalized());
     ASSERT_NEAR(std::abs(cosSim), 1.0, this->tolerance);
 }
+
+TYPED_TEST(InversePowerMethodTest, ThrowsIterationLimitExceeded) {
+    this->matrix.resize(2, 2);
+    this->matrix << 1, 2,
+            2, 1;
+    this->solver.setMatrix(this->matrix);
+    this->solver.setTolerance(this->tolerance);
+    this->solver.setMaxIterations(1);
+
+    EXPECT_THROW(this->solver.solve(), IterationLimitExceeded);
+}
+
+TYPED_TEST(InversePowerMethodTest, ThrowsInvalidInputExceptionForEmptyMatrix) {
+    Eigen::MatrixX<TypeParam> emptyMatrix;
+
+    EXPECT_THROW(this->solver.setMatrix(emptyMatrix), InvalidInputException);
+}
+

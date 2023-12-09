@@ -4,6 +4,7 @@
 #include <Eigen/Dense>
 #include <complex>
 #include "EigenvalueSolver.h"
+#include "exceptions/CustomExceptions.h"
 
 template <typename Scalar>
 class AbstractPowerMethod : public EigenvalueSolver<Scalar>
@@ -14,11 +15,14 @@ public:
     void solve() {
         this->initialize();
         currentIterations = 0;
-
         do {
             this->performIteration();
             ++currentIterations;
         } while (!this->hasConverged());
+        if (currentIterations >= this->maxIterations && ((previousVector - currentVector).norm() >= tolerance)) {
+            Scalar diff = (previousVector - currentVector).norm();
+            throw IterationLimitExceeded("Iteration limit exceeded before convergence.");
+        }
 
         this->obtainResults();
     }

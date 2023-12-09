@@ -9,6 +9,9 @@ class PowerMethod : public AbstractPowerMethod<Scalar>
 public:
     using AbstractPowerMethod<Scalar>::AbstractPowerMethod;
     void setMatrix(const Eigen::MatrixX<Scalar>& mat) {
+        if (mat.rows() == 0 || mat.cols() == 0) {
+            throw InvalidInputException("Matrix cannot be empty");
+        }
         this->matrix = mat;
     }
 
