@@ -19,8 +19,9 @@ public:
             this->performIteration();
             ++currentIterations;
         } while (!this->hasConverged());
-        if (currentIterations >= this->maxIterations && ((previousVector - currentVector).norm() >= tolerance)) {
-            Scalar diff = (previousVector - currentVector).norm();
+
+        typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
+        if (currentIterations >= this->maxIterations && diff > this->tolerance){
             throw IterationLimitExceeded("Iteration limit exceeded before convergence.");
         }
 
@@ -37,8 +38,9 @@ public:
 
     virtual void setMatrix(const Eigen::MatrixX<Scalar>& mat) = 0;
 
-    void setTolerance(Scalar tol) {
-        tolerance = tol;
+    void setTolerance(Scalar tol) override {
+        typename Eigen::NumTraits<Scalar>::Real realTolerance = std::abs(tol);
+        tolerance = realTolerance;
     }
 
     void setMaxIterations(int maxIter) {
@@ -48,7 +50,7 @@ public:
 protected:
     Eigen::MatrixX<Scalar> matrix;
     int maxIterations;
-    Scalar tolerance;
+    typename Eigen::NumTraits<Scalar>::Real tolerance;
     int currentIterations;
     Eigen::MatrixX<Scalar> currentVector;
     Eigen::MatrixX<Scalar> previousVector;
@@ -56,9 +58,10 @@ protected:
     Eigen::MatrixX<Scalar> eigenvectors;
 
     bool hasConverged() const {
-        Scalar diff = (previousVector - currentVector).norm();
+        typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
         return diff < tolerance || currentIterations >= maxIterations;
     }
+
 
     virtual void performIteration() = 0;
 
