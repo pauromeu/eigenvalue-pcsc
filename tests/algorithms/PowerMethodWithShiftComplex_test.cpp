@@ -2,18 +2,20 @@
 #include <complex>
 #include <algorithms/PowerMethodWithShift.h>
 
-class PowerMethodWithShiftComplexTest : public ::testing::Test {
+class PowerMethodWithShiftComplexTest : public ::testing::Test
+{
 protected:
-    PowerMethodWithShift<std::complex<float>> solver;
-    Eigen::MatrixX<std::complex<float>> matrix;
-    float tolerance;
+    PowerMethodWithShift<std::complex<double>> solver;
+    Eigen::MatrixX<std::complex<double>> matrix;
+    double tolerance;
     int maxIterations;
-    std::complex<float> shift = std::complex<float>(2.0f, 0.0f);
+    std::complex<double> shift = std::complex<double>(2.0f, 0.0f);
 
-    void SetUp() override {
+    void SetUp() override
+    {
         matrix.resize(2, 2);
-        matrix << std::complex<float>(3, 0), std::complex<float>(3, -2),
-                std::complex<float>(3, 2), std::complex<float>(2, 0);
+        matrix << std::complex<double>(3, 0), std::complex<double>(3, -2),
+            std::complex<double>(3, 2), std::complex<double>(2, 0);
         tolerance = 1e-6f;
         maxIterations = 1000;
         shift = 2.0f;
@@ -24,35 +26,38 @@ protected:
     }
 };
 
-TEST_F(PowerMethodWithShiftComplexTest, SolvesCorrectly) {
+TEST_F(PowerMethodWithShiftComplexTest, SolvesCorrectly)
+{
     solver.solve();
 
     auto eigenvalues = solver.getEigenvalues();
     auto eigenvectors = solver.getEigenvectors();
 
-    std::complex<float> firstEigenvalue = std::complex<float>(eigenvalues(0).real(), eigenvalues(0).imag());
+    std::complex<double> firstEigenvalue = std::complex<double>(eigenvalues(0).real(), eigenvalues(0).imag());
 
     EXPECT_NEAR(firstEigenvalue.real(), 6.14005, 1e-5);
     EXPECT_NEAR(firstEigenvalue.imag(), 0, tolerance);
 
-    Eigen::VectorX<std::complex<float>> actualVector = eigenvectors.col(0);
-    Eigen::VectorX<std::complex<float>> expectedVector(2);
+    Eigen::VectorX<std::complex<double>> actualVector = eigenvectors.col(0);
+    Eigen::VectorX<std::complex<double>> expectedVector(2);
 
-    Eigen::VectorX<std::complex<float>> result1 = matrix * actualVector;
+    Eigen::VectorX<std::complex<double>> result1 = matrix * actualVector;
 
-    Eigen::VectorX<std::complex<float>> result2 = firstEigenvalue * actualVector;
+    Eigen::VectorX<std::complex<double>> result2 = firstEigenvalue * actualVector;
 
-    float tolerance = 1e-5;
-    for (int i = 0; i < result1.size(); ++i) {
+    double tolerance = 1e-5;
+    for (int i = 0; i < result1.size(); ++i)
+    {
         EXPECT_NEAR(result1(i).real(), result2(i).real(), tolerance);
         EXPECT_NEAR(result1(i).imag(), result2(i).imag(), tolerance);
     }
 }
 
-TEST_F(PowerMethodWithShiftComplexTest, ThrowsIterationLimitExceeded) {
+TEST_F(PowerMethodWithShiftComplexTest, ThrowsIterationLimitExceeded)
+{
     this->matrix.resize(2, 2);
-    this-> matrix << std::complex<float>(0, 2), std::complex<float>(0, -1),
-            std::complex<float>(0, -1), std::complex<float>(0, 2);
+    this->matrix << std::complex<double>(0, 2), std::complex<double>(0, -1),
+        std::complex<double>(0, -1), std::complex<double>(0, 2);
     this->solver.setMatrix(this->matrix);
     this->solver.setTolerance(this->tolerance);
     this->solver.setMaxIterations(1);
