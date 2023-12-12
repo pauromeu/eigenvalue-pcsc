@@ -28,7 +28,7 @@ public:
         obtainResults();
     }
 
-    Eigen::VectorX<std::complex<double>> getEigenvalues() const { return eigenvalues; }
+    virtual Eigen::VectorX<std::complex<double>> getEigenvalues() const { return eigenvalues; }
     Eigen::MatrixX<Scalar> getEigenvectors() const { return eigenvectors; }
 
 protected:
