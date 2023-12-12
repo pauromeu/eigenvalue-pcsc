@@ -82,6 +82,10 @@ protected:
                 }
             }
 
+            // Sort the eigenvalues in descending order of their absolute values
+            std::sort(tempEigenvalues.data(), tempEigenvalues.data() + tempEigenvalues.size(), [](const std::complex<double> &a, const std::complex<double> &b)
+                      { return std::abs(a) > std::abs(b); });
+
             // Assign the temporary eigenvalues to the class member
             this->eigenvalues = tempEigenvalues;
         }
