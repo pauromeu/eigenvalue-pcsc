@@ -20,9 +20,8 @@ The project includes the following key features:
 4. **QR Method**:
    - An algorithm to compute all eigenvalues of a matrix by decomposing it into a product of an orthogonal matrix `Q` and an upper triangular matrix `R`.
 
-## Method Capabilities
 
-## Method Capabilities
+### Method Capabilities
 
 | Method                        | # Eigenvalues | # Eigenvectors | Real Matrix Support | Complex Matrix Support | Example Usage                            |
 | ----------------------------- | ------------- | --------------- | ------------------- | ----------------------- | ----------------------------------------- |
@@ -31,6 +30,17 @@ The project includes the following key features:
 | Shifted Power Method          | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example](#shifted-power-method)      |
 | Shifted Inverse Power Method  | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example](#shifted-inverse-power-method) |
 | QR Method                     | All      | ❌        | ✅                  | ✅                      | [Example](#qr-method)                 |
+
+### Available Options:
+
+| Flag              | Description                                                   | Compulsory | Default Value   | Example Usage                     |
+| ----------------- | ------------------------------------------------------------- | ---------- | --------------- | ---------------------------------- |
+| `--solver`    | Eigenvalue solver method to use.               | Yes        | -               | `--solver=pm`                        |
+| `--matrix`     | Name of the matrix file inside `data/matrix` in `mtx` format.         | Yes        | -               | `--matrix=can_24`              |
+| `--type`    | Type of solver used. Only two valid types: `real` and `complex`.      | No         | `real`   | `--type=complex`            |
+| `--tolerance`    | Tolerance of the solver for convergence check. | No         | `1e-6`           | `--tolerance=1e-8`                           |
+| `--shift`     | Shift value for Shifted Methods.                | For Shifted Methods         | `0.0`           | `--shift=1.0`                           |
+| `--maxIters`      | Number of maximum iterations            | No         | 10000               | `--maxIters=1000`                               |
 
 
 
