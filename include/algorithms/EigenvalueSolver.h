@@ -20,12 +20,14 @@ public:
 
     void solve()
     {
-        initialize();
-        while (!hasConverged())
+        this->initialize();
+        currentIteration = 0;
+        do
         {
-            performIteration();
-        }
-        obtainResults();
+            this->performIteration();
+            ++currentIteration;
+        } while (!this->hasConverged());
+        this->obtainResults();
     }
 
     virtual Eigen::VectorX<std::complex<double>> getEigenvalues() const { return eigenvalues; }
@@ -39,6 +41,8 @@ protected:
 
     Eigen::VectorX<std::complex<double>> eigenvalues;
     Eigen::MatrixX<Scalar> eigenvectors;
+
+    int currentIteration;
 };
 
 #endif // EIGENVALUE_SOLVER_H
