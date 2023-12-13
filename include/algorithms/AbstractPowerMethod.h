@@ -86,12 +86,7 @@ protected:
      */
     bool hasConverged() const
     {
-<<<<<<< HEAD
-        if (currentIterations >= maxIterations)
-=======
-
         if (this->currentIteration >= maxIterations)
->>>>>>> main
         {
             typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
             if (diff > tolerance)
