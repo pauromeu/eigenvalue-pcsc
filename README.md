@@ -28,9 +28,9 @@ The project includes the following key features:
 | ----------------------------- | ------------- | --------------- | ------------------- | ----------------------- | ----------------------------------------- |
 | Power Method                  | 1             | 1               | ✅                  | ✅                      | [Example](#power-method)              |
 | Inverse Power Method          | 1             | 1               | ✅                  | ✅                      | [Example](#inverse-power-method)      |
-| Shifted Power Method          | Multiple      | Multiple        | ✅                  | ✅                      | [Example](#shifted-power-method)      |
-| Shifted Inverse Power Method  | Multiple      | Multiple        | ✅                  | ✅                      | [Example](#shifted-inverse-power-method) |
-| QR Method                     | Multiple      | Multiple        | ✅                  | ✅                      | [Example](#qr-method)                 |
+| Shifted Power Method          | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example](#shifted-power-method)      |
+| Shifted Inverse Power Method  | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example](#shifted-inverse-power-method) |
+| QR Method                     | All      | ❌        | ✅                  | ✅                      | [Example](#qr-method)                 |
 
 
 
