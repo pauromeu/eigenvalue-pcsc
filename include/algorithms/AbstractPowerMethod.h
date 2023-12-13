@@ -22,11 +22,11 @@ public:
             ++currentIterations;
         } while (!this->hasConverged());
 
-        typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
-        if (currentIterations >= this->maxIterations && diff > this->tolerance)
-        {
-            throw IterationLimitExceeded("Iteration limit exceeded before convergence.");
-        }
+//        typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
+//        if (currentIterations >= this->maxIterations && diff > this->tolerance)
+//        {
+//            throw IterationLimitExceeded("Iteration limit exceeded before convergence.");
+//        }
 
         this->obtainResults();
     }
@@ -71,6 +71,16 @@ protected:
 
     bool hasConverged() const
     {
+
+        if (currentIterations >= maxIterations)
+        {
+            typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
+            if (diff > tolerance)
+            {
+                throw IterationLimitExceeded("Iteration limit exceeded before convergence.");
+            }
+        }
+
         typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
         return diff < tolerance || currentIterations >= maxIterations;
     }
