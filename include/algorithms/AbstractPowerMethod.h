@@ -21,32 +21,6 @@ class AbstractPowerMethod : public EigenvalueSolver<Scalar>
 public:
     using EigenvalueSolver<Scalar>::EigenvalueSolver;
 
-    /**
-     * @brief Solve the eigenvalue problem.
-     *
-     * This method solves the eigenvalue problem using the abstract power method.
-     * @throws IterationLimitExceeded if the iteration limit is exceeded before convergence.
-     * @throws EigenvalueSolverNotConverged if the eigenvalue solver does not converge.
-     * @return void
-     */
-    void solve()
-    {
-        this->initialize();
-        currentIterations = 0;
-        do
-        {
-            this->performIteration();
-            ++currentIterations;
-        } while (!this->hasConverged());
-        this->obtainResults();
-    }
-
-    /**
-     * @brief Get the eigenvalues.
-     *
-     * This method returns the eigenvalues of the matrix.
-     * @return A vector containing the eigenvalues.
-     */
     Eigen::VectorX<std::complex<double>> getEigenvalues() const override
     {
         return eigenvalues.template cast<std::complex<double>>();
@@ -97,7 +71,6 @@ protected:
     Eigen::MatrixX<Scalar> matrix;
     int maxIterations;
     typename Eigen::NumTraits<Scalar>::Real tolerance;
-    int currentIterations;
     Eigen::MatrixX<Scalar> currentVector;
     Eigen::MatrixX<Scalar> previousVector;
     Eigen::VectorX<Scalar> eigenvalues;
@@ -113,7 +86,12 @@ protected:
      */
     bool hasConverged() const
     {
+<<<<<<< HEAD
         if (currentIterations >= maxIterations)
+=======
+
+        if (this->currentIteration >= maxIterations)
+>>>>>>> main
         {
             typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
             if (diff > tolerance)
@@ -122,7 +100,7 @@ protected:
             }
         }
         typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
-        return diff < tolerance || currentIterations >= maxIterations;
+        return diff < tolerance || this->currentIteration >= maxIterations;
     }
 
     virtual void performIteration() = 0;
