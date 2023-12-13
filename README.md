@@ -20,6 +20,20 @@ The project includes the following key features:
 4. **QR Method**:
    - An algorithm to compute all eigenvalues of a matrix by decomposing it into a product of an orthogonal matrix `Q` and an upper triangular matrix `R`.
 
+## Method Capabilities
+
+## Method Capabilities
+
+| Method                        | # Eigenvalues | # Eigenvectors | Real Matrix Support | Complex Matrix Support | Example Usage                            |
+| ----------------------------- | ------------- | --------------- | ------------------- | ----------------------- | ----------------------------------------- |
+| Power Method                  | 1             | 1               | ✅                  | ✅                      | [Example](#power-method)              |
+| Inverse Power Method          | 1             | 1               | ✅                  | ✅                      | [Example](#inverse-power-method)      |
+| Shifted Power Method          | Multiple      | Multiple        | ✅                  | ✅                      | [Example](#shifted-power-method)      |
+| Shifted Inverse Power Method  | Multiple      | Multiple        | ✅                  | ✅                      | [Example](#shifted-inverse-power-method) |
+| QR Method                     | Multiple      | Multiple        | ✅                  | ✅                      | [Example](#qr-method)                 |
+
+
+
 ## Cloning the repository
 
 When cloning the repository to a new location, you should initialize and fetch the submodules:
