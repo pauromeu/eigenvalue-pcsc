@@ -14,6 +14,11 @@ class QRMethod : public EigenvalueSolver<Scalar>
 public:
     QRMethod(int maxIterations = 100000, Scalar tol = 1e-6) : maxIterations(maxIterations), tolerance(tol) {}
 
+    Eigen::MatrixX<Scalar> getEigenvectors() const override
+    {
+        return this->eigenvectors;
+    }
+
     void setMatrix(const Eigen::MatrixX<Scalar> &matrix)
     {
         this->matrix = matrix;

@@ -6,35 +6,62 @@
 #include "EigenvalueSolver.h"
 #include "exceptions/CustomExceptions.h"
 
+
+/**
+ * @class AbstractPowerMethod
+ * @brief A class for solving eigenvalue problems using the power method.
+ *
+ * @tparam Scalar
+ * AbstractPowerMethod is an abstract class that provides the basic structure
+ */
+
 template <typename Scalar>
 class AbstractPowerMethod : public EigenvalueSolver<Scalar>
 {
 public:
     using EigenvalueSolver<Scalar>::EigenvalueSolver;
 
-    // Eigen::VectorX<Scalar> getEigenvalues() const
-    // {
-    //     return eigenvalues;
-    // }
-
     Eigen::VectorX<std::complex<double>> getEigenvalues() const override
     {
         return eigenvalues.template cast<std::complex<double>>();
     }
 
+
+    /**
+     * @brief Get the eigenvectors.
+     *
+     * This method returns the eigenvectors of the matrix.
+    */
     Eigen::MatrixX<Scalar> getEigenvectors() const
     {
         return eigenvectors;
     }
 
+    /**
+     * @brief Set the matrix.
+     *
+     * This method sets the matrix to be used in the eigenvalue problem.
+     * @param mat The matrix to be used in the eigenvalue problem.
+     * @return void
+     */
     virtual void setMatrix(const Eigen::MatrixX<Scalar> &mat) = 0;
 
+    /**
+     * @brief Set the tolerance.
+     *
+     * This method sets the tolerance to be used in the eigenvalue problem.
+     */
     void setTolerance(Scalar tol) override
     {
         typename Eigen::NumTraits<Scalar>::Real realTolerance = std::abs(tol);
         tolerance = realTolerance;
     }
 
+    /**
+     * @brief Set the maximum number of iterations.
+     *
+     * This method sets the maximum number of iterations to be used in the eigenvalue problem.
+     */
     void setMaxIterations(int maxIter)
     {
         maxIterations = maxIter;
@@ -49,9 +76,16 @@ protected:
     Eigen::VectorX<Scalar> eigenvalues;
     Eigen::MatrixX<Scalar> eigenvectors;
 
+    /**
+     * @brief Check if the eigenvalue solver has converged.
+     *
+     * This method checks if the eigenvalue solver has converged.
+     * @return A boolean indicating whether the eigenvalue solver has converged.
+     * @throws IterationLimitExceeded if the iteration limit is exceeded before convergence.
+     * @throws EigenvalueSolverNotConverged if the eigenvalue solver does not converge.
+     */
     bool hasConverged() const
     {
-
         if (this->currentIteration >= maxIterations)
         {
             typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
@@ -60,19 +94,28 @@ protected:
                 throw IterationLimitExceeded("Iteration limit exceeded before convergence.");
             }
         }
-
         typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
         return diff < tolerance || this->currentIteration >= maxIterations;
     }
 
     virtual void performIteration() = 0;
 
+    /**
+     * @brief Initialize the eigenvalue solver.
+     *
+     * This method initializes the eigenvalue solver.
+     */
     void initialize()
     {
         currentVector = Eigen::MatrixX<Scalar>::Random(matrix.rows(), 1);
         previousVector = currentVector;
     }
 
+    /**
+     * @brief Obtain the results of the eigenvalue solver.
+     *
+     * Virtual method to be implemented by the subclasses.
+     */
     virtual void obtainResults() override = 0;
 };
 

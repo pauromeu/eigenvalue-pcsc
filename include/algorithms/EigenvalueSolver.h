@@ -31,7 +31,8 @@ public:
     }
 
     virtual Eigen::VectorX<std::complex<double>> getEigenvalues() const { return eigenvalues; }
-    Eigen::MatrixX<Scalar> getEigenvectors() const { return eigenvectors; }
+    //Eigen::MatrixX<Scalar> getEigenvectors() const { return eigenvectors; }
+    virtual Eigen::MatrixX<Scalar> getEigenvectors() const = 0;
 
 protected:
     virtual void initialize() = 0;
