@@ -12,25 +12,6 @@ class AbstractPowerMethod : public EigenvalueSolver<Scalar>
 public:
     using EigenvalueSolver<Scalar>::EigenvalueSolver;
 
-    void solve()
-    {
-        this->initialize();
-        currentIterations = 0;
-        do
-        {
-            this->performIteration();
-            ++currentIterations;
-        } while (!this->hasConverged());
-
-//        typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
-//        if (currentIterations >= this->maxIterations && diff > this->tolerance)
-//        {
-//            throw IterationLimitExceeded("Iteration limit exceeded before convergence.");
-//        }
-
-        this->obtainResults();
-    }
-
     // Eigen::VectorX<Scalar> getEigenvalues() const
     // {
     //     return eigenvalues;
@@ -63,7 +44,6 @@ protected:
     Eigen::MatrixX<Scalar> matrix;
     int maxIterations;
     typename Eigen::NumTraits<Scalar>::Real tolerance;
-    int currentIterations;
     Eigen::MatrixX<Scalar> currentVector;
     Eigen::MatrixX<Scalar> previousVector;
     Eigen::VectorX<Scalar> eigenvalues;
@@ -72,7 +52,7 @@ protected:
     bool hasConverged() const
     {
 
-        if (currentIterations >= maxIterations)
+        if (this->currentIteration >= maxIterations)
         {
             typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
             if (diff > tolerance)
@@ -82,7 +62,7 @@ protected:
         }
 
         typename Eigen::NumTraits<Scalar>::Real diff = (previousVector - currentVector).norm();
-        return diff < tolerance || currentIterations >= maxIterations;
+        return diff < tolerance || this->currentIteration >= maxIterations;
     }
 
     virtual void performIteration() = 0;

@@ -12,7 +12,7 @@ template <typename Scalar>
 class QRMethod : public EigenvalueSolver<Scalar>
 {
 public:
-    QRMethod(int maxIterations = 100000, Scalar tol = 1e-6) : currentIteration(0), maxIterations(maxIterations), tolerance(tol) {}
+    QRMethod(int maxIterations = 100000, Scalar tol = 1e-6) : maxIterations(maxIterations), tolerance(tol) {}
 
     void setMatrix(const Eigen::MatrixX<Scalar> &matrix)
     {
@@ -30,12 +30,11 @@ public:
 protected:
     void initialize()
     {
-        currentIteration = 0;
     }
 
     bool hasConverged() const
     {
-        if (currentIteration >= maxIterations)
+        if (this->currentIteration >= maxIterations)
         {
             std::cout << "Warning: QR method did not converge after " << maxIterations << " iterations." << std::endl;
             return true;
@@ -50,8 +49,6 @@ protected:
         Eigen::MatrixX<Scalar> Q = qr.householderQ();
         Eigen::MatrixX<Scalar> R = qr.matrixQR().template triangularView<Eigen::Upper>();
         matrix = R * Q;
-
-        currentIteration++;
     }
 
     void obtainResults()
@@ -121,7 +118,6 @@ protected:
 
 private:
     Eigen::MatrixX<Scalar> matrix;
-    int currentIteration;
     int maxIterations;
     Scalar tolerance;
 };

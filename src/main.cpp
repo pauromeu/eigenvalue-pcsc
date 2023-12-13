@@ -1,87 +1,46 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include <algorithm>
 #include <algorithms/EigenvalueSolver.h>
 #include <algorithms/QRMethod.h>
 #include <algorithms/PowerMethod.h>
 #include <algorithms/InversePowerMethod.h>
 #include <algorithms/PowerMethodWithShift.h>
 #include <algorithms/InversePowerMethodWithShift.h>
-#include <matrix_readers/MTXMatrixReader.h>
 #include <fstream>
+#include <readers/MatrixReaderMTX.h>
+#include <readers/ArgumentParser.h>
 
-class ArgumentParser
-{
-public:
-    ArgumentParser(int &argc, char **argv)
-    {
-        for (int i = 1; i < argc; ++i)
-        {
-            std::string token = argv[i];
-            if (token.substr(0, 2) == "--")
-            {
-                token = token.substr(2); // Remove the "--" prefix
-                size_t pos = token.find('=');
-                if (pos != std::string::npos)
-                {
-                    std::string key = token.substr(0, pos);
-                    std::string value = token.substr(pos + 1);
-                    args[key] = value;
-                }
-            }
-        }
-    }
-
-    const std::string &get(const std::string &key) const
-    {
-        auto itr = args.find(key);
-        if (itr != args.end())
-        {
-            return itr->second;
-        }
-        static const std::string empty_string("");
-        return empty_string;
-    }
-
-    bool exists(const std::string &key) const
-    {
-        return args.find(key) != args.end();
-    }
-
-private:
-    std::map<std::string, std::string> args;
-};
-
-EigenvalueSolver<double> *createRealSolver(const std::string &solverName, ArgumentParser &parser)
+template <typename Scalar>
+EigenvalueSolver<Scalar> *createSolver(const std::string &solverName, ArgumentParser &parser)
 {
     int maxIter = parser.exists("maxIter") ? std::stoi(parser.get("maxIter")) : 100000;
-    double tol = parser.exists("tol") ? std::stoi(parser.get("tol")) : 1e-6;
-    double shift = parser.exists("shift") ? std::stoi(parser.get("shift")) : 0;
+    Scalar tol = parser.exists("tol") ? std::stoi(parser.get("tol")) : 1e-6;
+    Scalar shift = parser.exists("shift") ? std::stoi(parser.get("shift")) : 0;
 
-    EigenvalueSolver<double> *solver = nullptr;
+    EigenvalueSolver<Scalar> *solver = nullptr;
 
     if (solverName == "qr")
     {
-        solver = new QRMethod<double>();
+        solver = new QRMethod<Scalar>();
     }
     else if (solverName == "pm") // Power method
     {
-        solver = new PowerMethod<double>();
+        solver = new PowerMethod<Scalar>();
     }
     else if (solverName == "im") // Inverse power method
     {
-        solver = new InversePowerMethod<double>();
+        solver = new InversePowerMethod<Scalar>();
     }
     else if (solverName == "pms") // Power method with shift
     {
-        auto shiftedSolver = new PowerMethodWithShift<double>();
+        auto shiftedSolver = new PowerMethodWithShift<Scalar>();
         shiftedSolver->setShift(shift);
         solver = shiftedSolver;
     }
     else if (solverName == "ims") // Inverse power method with shift
     {
-        auto shiftedSolver = new InversePowerMethodWithShift<double>();
+        auto shiftedSolver = new InversePowerMethodWithShift<Scalar>();
         shiftedSolver->setShift(shift);
         solver = shiftedSolver;
     }
@@ -97,48 +56,41 @@ EigenvalueSolver<double> *createRealSolver(const std::string &solverName, Argume
     return solver;
 }
 
-EigenvalueSolver<std::complex<double>> *createComplexSolver(const std::string &solverName, ArgumentParser &parser)
+template <typename Scalar>
+void writeResultsToFile(const EigenvalueSolver<Scalar> *solver, const std::string &matrixName)
 {
-    int maxIter = parser.exists("maxIter") ? std::stoi(parser.get("maxIter")) : 100000;
-    std::complex<double> tol = parser.exists("tol") ? std::stoi(parser.get("tol")) : 1e-6;
-    std::complex<double> shift = parser.exists("shift") ? std::stoi(parser.get("shift")) : 0;
-
-    EigenvalueSolver<std::complex<double>> *solver = nullptr;
-
-    if (solverName == "qr")
+    std::string filename = "results/" + matrixName + "_values.txt";
+    std::ofstream file(filename);
+    if (file.is_open())
     {
-        solver = new QRMethod<std::complex<double>>();
-    }
-    else if (solverName == "pm") // Power method
-    {
-        solver = new PowerMethod<std::complex<double>>();
-    }
-    else if (solverName == "im") // Inverse power method
-    {
-        solver = new InversePowerMethod<std::complex<double>>();
-    }
-    else if (solverName == "pms") // Power method with shift
-    {
-        auto shiftedSolver = new PowerMethodWithShift<std::complex<double>>();
-        shiftedSolver->setShift(shift);
-        solver = shiftedSolver;
-    }
-    else if (solverName == "ims") // Inverse power method with shift
-    {
-        auto shiftedSolver = new InversePowerMethodWithShift<std::complex<double>>();
-        shiftedSolver->setShift(shift);
-        solver = shiftedSolver;
+        file << solver->getEigenvalues();
+        file.close();
+        std::cout << "Results written to file: " << filename << std::endl;
     }
     else
     {
-        std::cout << "Invalid solver name." << std::endl;
-        return nullptr;
+        std::cerr << "Failed to open file: " << filename << std::endl;
     }
+}
 
-    solver->setTolerance(tol);
-    solver->setMaxIterations(maxIter);
+template <typename Scalar>
+void runSolver(EigenvalueSolver<Scalar> *solver, const std::string &matrixFile)
+{
+    try
+    {
+        MatrixReaderMTX<Scalar> reader(matrixFile);
+        auto matrix = reader.getDense();
+        reader.printMetadata();
+        solver->setMatrix(matrix);
+        solver->solve();
 
-    return solver;
+        writeResultsToFile(solver, reader.getMatrixName());
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error in runSolver: " << e.what() << std::endl;
+    }
+    delete solver;
 }
 
 int main(int argc, char **argv)
@@ -146,31 +98,22 @@ int main(int argc, char **argv)
     ArgumentParser parser(argc, argv);
 
     std::string solverName = parser.get("solver");
-    std::string matrixFile = parser.get("matrix");
+    std::string matrixFile = "data/matrix/" + parser.get("matrix") + ".mtx";
+    std::string type = parser.exists("type") ? parser.get("type") : "real";
 
-    // If the matrix typs is not specified, assume it is real
-    std::string matrixType = parser.exists("matrixType") ? parser.get("matrixType") : "real";
-
-    EigenvalueSolver<double> *solver = createRealSolver(solverName, parser);
-
-    auto reader = MTXMatrixReader(matrixFile);
-    reader.readMatrix();
-    Eigen::MatrixXd matrix = reader.getDenseMatrix();
-
-    solver->setMatrix(matrix);
-    solver->solve();
-
-    std::cout << "Eigenvalue(s): " << std::endl;
-    std::cout << solver->getEigenvalues() << std::endl;
-
-    std::ofstream file(parser.get("matrix") + "_values.txt");
-    if (file.is_open())
+    if (type == "real")
     {
-        file << solver->getEigenvalues();
+        auto solver = createSolver<double>(solverName, parser);
+        runSolver(solver, matrixFile);
     }
-    file.close();
-
-    delete solver;
-
+    else if (type == "complex")
+    {
+        auto solver = createSolver<std::complex<double>>(solverName, parser);
+        runSolver(solver, matrixFile);
+    }
+    else
+    {
+        std::cout << "Invalid type." << std::endl;
+    }
     return 0;
 }
