@@ -4,6 +4,15 @@
 #include <string>
 #include <algorithms/EigenvalueSolver.h>
 
+/**
+ * @brief Write the eigenvalues to a file.
+ *
+ * @tparam Scalar The scalar type of the solver. It can be either double or std::complex<double>.
+ * @param solver The solver instance.
+ * @param matrixName The name of the matrix.
+ *
+ * @throw IOFileSolverException If the file cannot be opened.
+ */
 template <typename Scalar>
 void writeResultsToFile(const EigenvalueSolver<Scalar> *solver, const std::string &matrixName)
 {
@@ -22,6 +31,15 @@ void writeResultsToFile(const EigenvalueSolver<Scalar> *solver, const std::strin
     }
 }
 
+/**
+ * @brief Export the eigenvalues to a file that can be read by Gnuplot.
+ *
+ * @tparam Scalar The scalar type of the solver. It can be either double or std::complex<double>.
+ * @param solver The solver instance.
+ * @param matrixName The name of the matrix.
+ *
+ * @throw IOFileSolverException If the file cannot be opened.
+ */
 template <typename Scalar>
 void exportEigenvaluesToGnuplot(const EigenvalueSolver<Scalar> *solver, const std::string &matrixName)
 {
@@ -43,6 +61,15 @@ void exportEigenvaluesToGnuplot(const EigenvalueSolver<Scalar> *solver, const st
     }
 }
 
+/**
+ * @brief Write the eigenvectors to a file.
+ *
+ * @tparam Scalar The scalar type of the solver. It can be either double or std::complex<double>.
+ * @param solver The solver instance.
+ * @param matrixName The name of the matrix.
+ *
+ * @throw IOFileSolverException If the file cannot be opened.
+ */
 template <typename Scalar>
 void writeEigenvectorsToFile(const EigenvalueSolver<Scalar> *solver, const std::string &matrixName)
 {

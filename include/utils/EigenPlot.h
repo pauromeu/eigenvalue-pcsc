@@ -4,6 +4,14 @@
 #include <cstdlib>
 #include "exceptions/SolverException.h"
 
+/**
+ * @brief Plot the eigenvalues using Gnuplot.
+ *
+ * @param matrixName The name of the matrix.
+ * @param scriptName The name of the Gnuplot script. These scripts are located in the gnuplot/ folder.
+ *
+ * @throw IOFileSolverException If the Gnuplot script cannot be opened or executed.
+ */
 void plotEigenvalues(const std::string &matrixName, const std::string &scriptName)
 {
     const std::string scriptFolder = "gnuplot";
@@ -56,4 +64,6 @@ void plotEigenvalues(const std::string &matrixName, const std::string &scriptNam
     }
 
     std::remove(tempScriptFilename.c_str());
+
+    std::cout << "Image successfully saved to file: " << outputFilename << std::endl;
 }

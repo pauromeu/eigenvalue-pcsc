@@ -4,25 +4,54 @@
 #include <Eigen/Sparse>
 #include <Eigen/Dense>
 
+/**
+ * @brief A class for reading matrices in the Matrix Market format (.mtx).
+ *
+ * It supports both real and complex matrices. It can return the matrix as a dense or sparse matrix.
+ *
+ * The Matrix Market format is a simple format for storing matrices. If you want to know more about it, check out the [Matrix Market website](https://math.nist.gov/MatrixMarket/formats.html).
+ *
+ * @tparam Scalar The scalar type of the matrix.
+ */
 template <typename Scalar>
 class MatrixReaderMTX
 {
 public:
+    /**
+     * @brief Construct a new Matrix Reader MTX object.
+     *
+     * @param filename The path to the matrix file.
+     */
     MatrixReaderMTX(const std::string &filename)
     {
         parseFile(filename);
     }
 
+    /**
+     * @brief Get the matrix as a dense matrix.
+     *
+     * @return The matrix as a dense matrix.
+     */
     Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> getDense()
     {
         return Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>(matrix);
     }
 
+    /**
+     * @brief Get the matrix as a sparse matrix.
+     *
+     * @return The matrix as a sparse matrix.
+     */
     Eigen::SparseMatrix<Scalar> getSparse()
     {
         return matrix;
     }
 
+    /**
+     * @brief Print the metadata of the matrix.
+     *
+     * The metadata includes the name, dimensions, number of non-zero elements, and whether the matrix is complex or symmetric.
+     */
     void printMetadata()
     {
         std::cout << "====== Matrix: " + name + " ======" << std::endl;
@@ -33,11 +62,21 @@ public:
         std::cout << "=========================" << std::endl;
     }
 
+    /**
+     * @brief Check if the matrix is complex.
+     *
+     * @return True if the matrix is complex, false otherwise.
+     */
     bool isComplexMatrix()
     {
         return isComplex;
     }
 
+    /**
+     * @brief Get the name of the matrix.
+     *
+     * @return The name of the matrix.
+     */
     std::string getMatrixName()
     {
         return name;
@@ -50,6 +89,13 @@ private:
     bool isComplex;
     int rows, cols, nnz;
 
+    /**
+     * @brief Parse the matrix file.
+     *
+     * @param filename The path to the matrix file.
+     *
+     * @throw IOFileSolverException If the file does not exist or the extension is not .mtx or the matrix is not in the Matrix Market format.
+     */
     void parseFile(const std::string &filename)
     {
         std::ifstream file(filename);
@@ -77,6 +123,13 @@ private:
         file.close();
     }
 
+    /**
+     * @brief Process the header of the matrix file.
+     *
+     * The header contains the dimensions and whether the matrix is complex or symmetric.
+     *
+     * @param file The matrix file.
+     */
     void processHeader(std::ifstream &file)
     {
         // Get first line and look for "complex" or "symmetric"
@@ -105,6 +158,13 @@ private:
         ss >> rows >> cols >> nnz;
     }
 
+    /**
+     * @brief Read the matrix from the file.
+     *
+     * It handles both real and complex matrices and stores them in a sparse matrix.
+     *
+     * @param file The matrix file.
+     */
     void readMatrix(std::ifstream &file)
     {
         matrix = Eigen::SparseMatrix<Scalar>(rows, cols);
@@ -137,7 +197,23 @@ private:
         }
     }
 
+    /**
+     * @brief Add a complex entry to the matrix.
+     *
+     * @param row The row of the entry.
+     * @param col The column of the entry.
+     * @param real The real part of the entry.
+     * @param imag The imaginary part of the entry.
+     */
     void addComplexEntry(int row, int col, double real, double imag);
+
+    /**
+     * @brief Add a real entry to the matrix.
+     *
+     * @param row The row of the entry.
+     * @param col The column of the entry.
+     * @param real The real part of the entry.
+     */
     void addRealEntry(int row, int col, double real);
 };
 
