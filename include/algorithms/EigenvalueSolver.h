@@ -82,8 +82,8 @@ protected:
      * Perform any variable initialization here
      */
     virtual void initialize() = 0;
-  
-     /**
+
+    /**
      * @brief Check if the solver has converged
      * Using the current iteration and the tolerance, check if the solver has converged to the desired tolerance
      *

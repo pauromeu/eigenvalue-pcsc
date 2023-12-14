@@ -18,6 +18,13 @@ EigenvalueSolver<Scalar> *createSolver(const std::string &solverName, ArgumentPa
     Scalar tol = parser.exists("tol") ? std::stoi(parser.get("tol")) : 1e-6;
     Scalar shift = parser.exists("shift") ? std::stoi(parser.get("shift")) : 0;
 
+    // If method is shifted, then shift must be provided
+    if ((solverName == "pms" || solverName == "ims") && !parser.exists("shift"))
+    {
+        throw SolverInitializationException("Shift must be provided for shifted methods.",
+                                            "Use --shift=<shift> to use a valid shift.");
+    }
+
     EigenvalueSolver<Scalar> *solver = nullptr;
 
     if (solverName == "qr")
@@ -46,8 +53,8 @@ EigenvalueSolver<Scalar> *createSolver(const std::string &solverName, ArgumentPa
     }
     else
     {
-        std::cout << "Invalid solver name." << std::endl;
-        return nullptr;
+        throw SolverInitializationException("Invalid solver: " + solverName + ".",
+                                            "Use --solver=<solver> to use a valid solver.\nThe available solvers are: qr, pm, im, pms, ims.");
     }
 
     solver->setTolerance(tol);
@@ -69,10 +76,10 @@ void writeResultsToFile(const EigenvalueSolver<Scalar> *solver, const std::strin
     }
     else
     {
-        std::cerr << "Failed to open file: " << filename << std::endl;
+        throw IOFileSolverException("Failed to open file: " + filename,
+                                    "Make sure the results/ folder exists in the root directory.");
     }
 }
-
 
 template <typename Scalar>
 void exportEigenvaluesToGnuplot(const EigenvalueSolver<Scalar> *solver, const std::string &matrixName)
@@ -90,7 +97,8 @@ void exportEigenvaluesToGnuplot(const EigenvalueSolver<Scalar> *solver, const st
     }
     else
     {
-        std::cerr << "Failed to open file: " << filename << std::endl;
+        throw IOFileSolverException("Failed to open file: " + filename,
+                                    "Make sure the results/ folder exists in the root directory.");
     }
 }
 
@@ -101,7 +109,17 @@ void writeEigenvectorsToFile(const EigenvalueSolver<Scalar> *solver, const std::
     std::ofstream file(filename);
     if (file.is_open())
     {
-        const Eigen::MatrixX<Scalar>& eigenvectors = solver->getEigenvectors();
+        Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> eigenvectors;
+        try
+        {
+            eigenvectors = solver->getEigenvectors();
+        }
+        catch (const NotImplementedSolverException &e) // QR method does not compute eigenvectors, don't write to file but don't throw exception
+        {
+            std::cout << "[WARNING]: This solver does not compute eigenvectors." << std::endl;
+            return;
+        }
+
         for (int i = 0; i < eigenvectors.rows(); ++i)
         {
             for (int j = 0; j < eigenvectors.cols(); ++j)
@@ -124,7 +142,8 @@ void writeEigenvectorsToFile(const EigenvalueSolver<Scalar> *solver, const std::
     }
     else
     {
-        std::cerr << "Failed to open file: " << filename << std::endl;
+        throw IOFileSolverException("Failed to open file: " + filename,
+                                    "Make sure the results/ folder exists in the root directory.");
     }
 }
 
@@ -136,13 +155,20 @@ void runSolver(EigenvalueSolver<Scalar> *solver, const std::string &matrixFile)
         MatrixReaderMTX<Scalar> reader(matrixFile);
         auto matrix = reader.getDense();
         reader.printMetadata();
-/*
-        Emergency fix to matrix reading:
-        TODO: fix problem with reading matrix from file
-        matrix.resize(2,2);
-        matrix << 1, 2,
-                2, 1;
-*/
+
+        bool isMatrixComplex = reader.isComplexMatrix();
+        bool isSolverComplex = std::is_same<Scalar, std::complex<double>>::value;
+
+        // Check if both matrix and solver are either complex or real
+        if (isMatrixComplex != isSolverComplex)
+        {
+            std::string matrixType = isMatrixComplex ? "complex" : "real";
+            std::string solverType = isSolverComplex ? "complex" : "real";
+
+            throw SolverInitializationException("Matrix and solver types do not match. You are trying to use a " + solverType + " solver on a " + matrixType + " matrix.",
+                                                "Use --type=" + matrixType + " to use the correct solver.");
+        }
+
         solver->setMatrix(matrix);
         solver->solve();
 
@@ -155,9 +181,11 @@ void runSolver(EigenvalueSolver<Scalar> *solver, const std::string &matrixFile)
         // gnuploting the spectrum of eigenvalues (only one eigenvalue for power method)
         exportEigenvaluesToGnuplot(solver, reader.getMatrixName());
         std::string plotCommand = "gnuplot -e \"set terminal png size 800,600; "
-                                  "set output 'results/" + reader.getMatrixName() + "_spectrum.png'; "
-                                                                                    "set style circle radius graph 0.01; "
-                                                                                    "plot 'results/" + reader.getMatrixName() + "_eigenvalues.dat' using 1:2 with circles fill solid lc rgb 'black'\"";
+                                  "set output 'results/" +
+                                  reader.getMatrixName() + "_spectrum.png'; "
+                                                           "set style circle radius graph 0.01; "
+                                                           "plot 'results/" +
+                                  reader.getMatrixName() + "_eigenvalues.dat' using 1:2 with circles fill solid lc rgb 'black'\"";
         system(plotCommand.c_str());
     }
     catch (const std::exception &e)
@@ -169,25 +197,47 @@ void runSolver(EigenvalueSolver<Scalar> *solver, const std::string &matrixFile)
 
 int main(int argc, char **argv)
 {
-    ArgumentParser parser(argc, argv);
+    try
+    {
+        ArgumentParser parser(argc, argv);
 
-    std::string solverName = parser.get("solver");
-    std::string matrixFile = "data/matrix/" + parser.get("matrix") + ".mtx";
-    std::string type = parser.exists("type") ? parser.get("type") : "real";
+        // assert solver and matrix are provided
+        if (!parser.exists("solver") || !parser.exists("matrix"))
+        {
 
-    if (type == "real")
-    {
-        auto solver = createSolver<double>(solverName, parser);
-        runSolver(solver, matrixFile);
+            throw SolverInitializationException("Both solver and matrix must be provided.",
+                                                "Usage: build/Eigenvalues-PCSC --sovler=<solver> --matrix=<matrix> [options]");
+        }
+
+        std::string solverName = parser.get("solver");
+        std::string matrixFile = "data/matrix/" + parser.get("matrix") + ".mtx";
+        std::string type = parser.exists("type") ? parser.get("type") : "real";
+
+        if (type == "real")
+        {
+            auto solver = createSolver<double>(solverName, parser);
+            runSolver(solver, matrixFile);
+        }
+        else if (type == "complex")
+        {
+            auto solver = createSolver<std::complex<double>>(solverName, parser);
+            runSolver(solver, matrixFile);
+        }
+        else
+        {
+            throw SolverInitializationException("Invalid solver type: " + type + ".",
+                                                "Use either --type=real or --type=complex.");
+        }
     }
-    else if (type == "complex")
+    catch (const SolverException &e)
     {
-        auto solver = createSolver<std::complex<double>>(solverName, parser);
-        runSolver(solver, matrixFile);
+        std::cerr << "\033[31m[SOLVER ERROR]: " << e.what() << "\033[0m" << std::endl;
+        return 1;
     }
-    else
+    catch (const std::exception &e)
     {
-        std::cout << "Invalid type." << std::endl;
+        std::cerr << "\033[31m[ERROR]: " << e.what() << "\033[0m" << std::endl;
+        return 1;
     }
     return 0;
 }

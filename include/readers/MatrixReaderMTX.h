@@ -1,3 +1,6 @@
+#ifndef MATRIX_READER_MTX_H
+#define MATRIX_READER_MTX_H
+
 #include <Eigen/Sparse>
 #include <Eigen/Dense>
 
@@ -22,9 +25,11 @@ public:
 
     void printMetadata()
     {
-        std::cout << "======== " + name + " ========" << std::endl;
+        std::cout << "====== Matrix: " + name + " ======" << std::endl;
         std::cout << "Rows: " << rows << ", Cols: " << cols << ", NNZ: " << nnz << std::endl;
-        std::cout << "Is complex: " << isComplex << ", Is symmetric: " << isSymmetric << std::endl;
+        std::cout << std::boolalpha
+                  << "Is complex: " << isComplex
+                  << ", Is symmetric: " << isSymmetric << std::endl;
         std::cout << "=========================" << std::endl;
     }
 
@@ -48,9 +53,19 @@ private:
     void parseFile(const std::string &filename)
     {
         std::ifstream file(filename);
+
+        // Assert file is open
         if (!file.is_open())
         {
-            throw std::runtime_error("Unable to open file: " + filename);
+            throw IOFileSolverException("Failed to open file: " + filename,
+                                        "Make sure the matrix is in the data/matrix/ folder.");
+        }
+
+        // Assert file extension is .mtx
+        if (filename.substr(filename.find_last_of(".") + 1) != "mtx")
+        {
+            throw IOFileSolverException("Invalid file extension: " + filename,
+                                        "Make sure the matrix is in the Matrix Market format (.mtx).");
         }
 
         name = filename.substr(filename.find_last_of("/") + 1, filename.find_last_of(".") - filename.find_last_of("/") - 1);
@@ -72,7 +87,6 @@ private:
         isSymmetric = false;
         if (line.find("complex") != std::string::npos)
         {
-            std::cout << "Found complex" << std::endl;
             isComplex = true;
         }
         if (line.find("symmetric") != std::string::npos)
@@ -152,3 +166,5 @@ void MatrixReaderMTX<double>::addRealEntry(int row, int col, double real)
 
 template <>
 void MatrixReaderMTX<std::complex<double>>::addRealEntry(int row, int col, double real) {}
+
+#endif // MATRIX_READER_MTX_H

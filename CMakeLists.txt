@@ -23,9 +23,6 @@ add_subdirectory(extern/googletest)
 # Recursively find all test source files in the tests directory
 file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp")
 
-# Add only necessary source files from the src directory
-list(APPEND TEST_SOURCES "src/Greeter.cpp")
-
 # Create the test executable
 add_executable(Eigenvalue-PCSC-tests ${TEST_SOURCES})
 target_link_libraries(Eigenvalue-PCSC-tests gtest_main)
