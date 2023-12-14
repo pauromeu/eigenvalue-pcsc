@@ -1,0 +1,31 @@
+\doxysection{MTXMatrix\+Reader.\+h}
+\hypertarget{_m_t_x_matrix_reader_8h_source}{}\label{_m_t_x_matrix_reader_8h_source}\index{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/matrix\_readers/MTXMatrixReader.h@{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/matrix\_readers/MTXMatrixReader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ MTXMATRIXREADER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ MTXMATRIXREADER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}MatrixReader.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <Eigen/Sparse>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <Eigen/Dense>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_m_t_x_matrix_reader}{MTXMatrixReader}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_matrix_reader}{MatrixReader}}}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{class_m_t_x_matrix_reader}{MTXMatrixReader}}(\textcolor{keyword}{const}\ std::string\ \&filePath);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_m_t_x_matrix_reader_ac4ab5254b00cc28ebcf57da87c2768c9}{readMatrix}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00041\ \ \ \ \ Eigen::SparseMatrix<double>\ \mbox{\hyperlink{class_m_t_x_matrix_reader_a5fa845e7778e92913e69354da99cb04a}{getSparseMatrix}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00048\ \ \ \ \ Eigen::MatrixXd\ \mbox{\hyperlink{class_m_t_x_matrix_reader_a7158a91af3ff87354bbb3b59f239ead0}{getDenseMatrix}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00051\ \ \ \ \ std::string\ filePath;}
+\DoxyCodeLine{00052\ \ \ \ \ Eigen::SparseMatrix<double>\ matrix;}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MTXMATRIXREADER\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,39 @@
+\doxysection{Power\+Method.\+h}
+\hypertarget{_power_method_8h_source}{}\label{_power_method_8h_source}\index{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/PowerMethod.h@{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/PowerMethod.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ POWER\_METHOD\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ POWER\_METHOD\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}AbstractPowerMethod.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_power_method}{PowerMethod}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_abstract_power_method}{AbstractPowerMethod}}<Scalar>}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{class_abstract_power_method}{AbstractPowerMethod}}<Scalar>\mbox{\hyperlink{class_abstract_power_method}{::AbstractPowerMethod}};}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_power_method_ae3dc53c2eb50721cd46d22ac731ebfc3}{setMatrix}}(\textcolor{keyword}{const}\ Eigen::MatrixX<Scalar>\&\ mat)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mat.rows()\ ==\ 0\ ||\ mat.cols()\ ==\ 0)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{class_invalid_input_exception}{InvalidInputException}}(\textcolor{stringliteral}{"{}Matrix\ cannot\ be\ empty"{}});}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ this-\/>matrix\ =\ mat;}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_power_method_a06a02899e33dc9179fa0aae97af8c897}{performIteration}}()\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ this-\/>previousVector\ =\ this-\/>currentVector;}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ this-\/>currentVector\ =\ this-\/>matrix\ *\ this-\/>currentVector;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ this-\/>currentVector.normalize();}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_power_method_a727ebce3e4575428a702648842c2057d}{obtainResults}}()\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ Eigen::Matrix<Scalar,\ Eigen::Dynamic,\ 1>\ vectorizedCurrentVector\ =\ this-\/>currentVector;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ Scalar\ eigenvalue\ =\ (this-\/>matrix\ *\ vectorizedCurrentVector).dot(vectorizedCurrentVector)\ /\ vectorizedCurrentVector.squaredNorm();}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ this-\/>eigenvalues\ =\ Eigen::VectorX<Scalar>::Constant(1,\ eigenvalue);}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ this-\/>eigenvectors\ =\ vectorizedCurrentVector;}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ POWER\_METHOD\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,49 @@
+\doxysection{Inverse\+Power\+Method.\+h}
+\hypertarget{_inverse_power_method_8h_source}{}\label{_inverse_power_method_8h_source}\index{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/InversePowerMethod.h@{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/InversePowerMethod.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ INVERSE\_POWER\_METHOD\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ INVERSE\_POWER\_METHOD\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}AbstractPowerMethod.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_inverse_power_method}{InversePowerMethod}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_abstract_power_method}{AbstractPowerMethod}}<Scalar>}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{class_abstract_power_method}{AbstractPowerMethod}}<Scalar>\mbox{\hyperlink{class_abstract_power_method}{::AbstractPowerMethod}};}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_inverse_power_method_a3715e51d49cc4c787a67435e330176d3}{setMatrix}}(\textcolor{keyword}{const}\ Eigen::MatrixX<Scalar>\&\ mat)\{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mat.rows()\ ==\ 0\ ||\ mat.cols()\ ==\ 0)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{class_invalid_input_exception}{InvalidInputException}}(\textcolor{stringliteral}{"{}Matrix\ cannot\ be\ empty"{}});}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ this-\/>matrix\ =\ mat;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ matrixInverse\ =\ this-\/>matrix.inverse();}
+\DoxyCodeLine{00031\ \ \ \ \ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00035\ \ \ \ \ Eigen::MatrixX<Scalar>\ matrixInverse;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_inverse_power_method_a956edb4c02be0b9f420ca7a7baef0c60}{performIteration}}()\{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ this-\/>previousVector\ =\ this-\/>currentVector;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ this-\/>currentVector\ =\ matrixInverse\ *\ this-\/>currentVector;}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ this-\/>currentVector.normalize();}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_inverse_power_method_acd9d9016085f61b24cc858bfed872dc8}{obtainResults}}()\{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ Eigen::Matrix<Scalar,\ Eigen::Dynamic,\ 1>\ vectorizedCurrentVector\ =\ this-\/>currentVector;}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ Scalar\ eigenvalue\ =\ (matrixInverse\ *\ vectorizedCurrentVector).dot(vectorizedCurrentVector)\ /\ vectorizedCurrentVector.squaredNorm();}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same<Scalar,\ std::complex<float>>::value\ ||\ std::is\_same<Scalar,\ std::complex<double>>::value)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ Scalar\ one\ =\ Scalar(1.0,\ 0.0);}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>eigenvalues\ =\ Eigen::VectorX<Scalar>::Constant(1,\ one\ /\ eigenvalue);}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>eigenvalues\ =\ Eigen::VectorX<Scalar>::Constant(1,\ 1\ /\ eigenvalue);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ this-\/>eigenvectors\ =\ vectorizedCurrentVector;}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ INVERSE\_POWER\_METHOD\_H}}
+
+\end{DoxyCode}

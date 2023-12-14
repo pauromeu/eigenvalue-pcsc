@@ -1,0 +1,58 @@
+\doxysection{Inverse\+Power\+Method\+With\+Shift.\+h}
+\hypertarget{_inverse_power_method_with_shift_8h_source}{}\label{_inverse_power_method_with_shift_8h_source}\index{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/InversePowerMethodWithShift.h@{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/InversePowerMethodWithShift.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ INVERSE\_POWER\_METHOD\_WITH\_SHIFT\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ INVERSE\_POWER\_METHOD\_WITH\_SHIFT\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}AbstractPowerMethod.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_inverse_power_method_with_shift}{InversePowerMethodWithShift}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_abstract_power_method}{AbstractPowerMethod}}<Scalar>}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{class_abstract_power_method}{AbstractPowerMethod}}<Scalar>\mbox{\hyperlink{class_abstract_power_method}{::AbstractPowerMethod}};}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_inverse_power_method_with_shift_ad22748c8309bc7c612a0ef442c388634}{setMatrix}}(\textcolor{keyword}{const}\ Eigen::MatrixX<Scalar>\&\ mat)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mat.rows()\ ==\ 0\ ||\ mat.cols()\ ==\ 0)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{class_invalid_input_exception}{InvalidInputException}}(\textcolor{stringliteral}{"{}Matrix\ cannot\ be\ empty"{}});}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ this-\/>matrix\ =\ mat;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ shiftedMatrix\ =\ this-\/>matrix\ -\/\ shift\ *\ Eigen::MatrixX<Scalar>::Identity(this-\/>matrix.rows(),\ this-\/>matrix.cols());}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ matrixInverse\ =\ shiftedMatrix.inverse();}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_inverse_power_method_with_shift_a58d8a3f19e5a4dc59de407acc081e12c}{setShift}}(Scalar\ sh)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ shift\ =\ sh;}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_inverse_power_method_with_shift_a241de203906c8f1d8ccdfdbb7ec02d07}{performIteration}}()\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ this-\/>previousVector\ =\ this-\/>currentVector;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ this-\/>currentVector\ =\ matrixInverse\ *\ this-\/>currentVector;}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ this-\/>currentVector.normalize();}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_inverse_power_method_with_shift_a95025eb346b33cd9d5f6066145705bf1}{obtainResults}}()\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ Eigen::Matrix<Scalar,\ Eigen::Dynamic,\ 1>\ vectorizedCurrentVector\ =\ this-\/>currentVector;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ Scalar\ eigenvalue\ =\ (matrixInverse\ *\ vectorizedCurrentVector).dot(vectorizedCurrentVector)\ /\ vectorizedCurrentVector.squaredNorm();}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same<Scalar,\ std::complex<float>>::value\ ||\ std::is\_same<Scalar,\ std::complex<double>>::value)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ Scalar\ one\ =\ Scalar(1.0,\ 0.0);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>eigenvalues\ =\ Eigen::VectorX<Scalar>::Constant(1,\ one\ /\ eigenvalue\ +\ shift);}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>eigenvalues\ =\ Eigen::VectorX<Scalar>::Constant(1,\ 1\ /\ eigenvalue\ +\ shift);}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ this-\/>eigenvectors\ =\ vectorizedCurrentVector;}
+\DoxyCodeLine{00074\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00078\ \ \ \ \ Eigen::MatrixX<Scalar>\ matrixInverse;}
+\DoxyCodeLine{00079\ \ \ \ \ Eigen::MatrixX<Scalar>\ shiftedMatrix;}
+\DoxyCodeLine{00080\ \ \ \ \ Scalar\ shift;}
+\DoxyCodeLine{00081\ \};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ INVERSE\_POWER\_METHOD\_WITH\_SHIFT\_H}}
+
+\end{DoxyCode}

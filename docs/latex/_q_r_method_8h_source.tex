@@ -1,0 +1,146 @@
+\doxysection{QRMethod.\+h}
+\hypertarget{_q_r_method_8h_source}{}\label{_q_r_method_8h_source}\index{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/QRMethod.h@{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/QRMethod.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ QRMETHOD\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ QRMETHOD\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <algorithms/EigenvalueSolver.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}EigenvalueSolver.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <Eigen/Dense>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <exceptions/SolverException.h>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_q_r_method}{QRMethod}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigenvalue_solver}{EigenvalueSolver}}<Scalar>}
+\DoxyCodeLine{00013\ \{}
+\DoxyCodeLine{00014\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{class_q_r_method_aee997c17fb94c2988d322c7764b9c14d}{QRMethod}}(\textcolor{keywordtype}{int}\ maxIterations\ =\ 100000,\ Scalar\ tol\ =\ 1e-\/6)\ :\ maxIterations(maxIterations),\ tolerance(tol)\ \{\}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00031\ \ \ \ \ Eigen::MatrixX<Scalar>\ \mbox{\hyperlink{class_q_r_method_a775890d428e95ff10283e91ca789f141}{getEigenvectors}}()\textcolor{keyword}{\ const\ override}}
+\DoxyCodeLine{00032\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{class_not_implemented_solver_exception}{NotImplementedSolverException}}(\textcolor{stringliteral}{"{}Eigenvectors\ are\ not\ supported\ for\ the\ QR\ method."{}},}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Use\ a\ different\ method\ to\ obtain\ the\ eigenvectors."{}});}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_q_r_method_aba3de462789c2c01a1ef40add6c757d1}{setMatrix}}(\textcolor{keyword}{const}\ Eigen::MatrixX<Scalar>\ \&matrix)}
+\DoxyCodeLine{00043\ \ \ \ \ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ this-\/>matrix\ =\ matrix;}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_q_r_method_a4460719122785d202d71ecdc32ab0513}{setMaxIterations}}(\textcolor{keywordtype}{int}\ maxIter)}
+\DoxyCodeLine{00055\ \ \ \ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ this-\/>maxIterations\ =\ maxIter;}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_q_r_method_a75be6d34e80d72ab8307bc86a5587e09}{setTolerance}}(Scalar\ tol)}
+\DoxyCodeLine{00066\ \ \ \ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ this-\/>tolerance\ =\ tol;}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_q_r_method_abfc9618ff33f6bdd2f6ecdd21d730410}{initialize}}()}
+\DoxyCodeLine{00079\ \ \ \ \ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_q_r_method_a08d2961f9ea9f82cbff74f2474c144a4}{hasConverged}}()}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>currentIteration\ >=\ maxIterations)}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Warning:\ QR\ method\ did\ not\ converge\ after\ "{}}\ <<\ maxIterations\ <<\ \textcolor{stringliteral}{"{}\ iterations."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_q_r_method_afbf15ce3ce3657017d481bf153c7699a}{performIteration}}()}
+\DoxyCodeLine{00109\ \ \ \ \ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ Eigen::HouseholderQR<Eigen::MatrixX<Scalar>>\ qr\ =\ matrix.householderQr();}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ Eigen::MatrixX<Scalar>\ Q\ =\ qr.householderQ();}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ Eigen::MatrixX<Scalar>\ R\ =\ qr.matrixQR().template\ triangularView<Eigen::Upper>();}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ matrix\ =\ R\ *\ Q;}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_q_r_method_a43385ddc7f4da4c9596130076b7a8608}{obtainResults}}()}
+\DoxyCodeLine{00125\ \ \ \ \ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ 0;}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ n\ =\ matrix.rows();}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ Eigen::VectorX<std::complex<double>>\ tempEigenvalues;}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (i\ <\ n)}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ n\ -\/\ 1\ \&\&\ std::abs(matrix(i\ +\ 1,\ i))\ >\ std::abs(this-\/>tolerance))}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ block\ =\ matrix.block(i,\ i,\ 2,\ 2);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ conjugateEigenvalues\ =\ \mbox{\hyperlink{class_q_r_method_ac9d5f50bcb9055f01d5f42315b4361a5}{computeComplexConjugateEigenvalues}}(block);}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ currentSize\ =\ tempEigenvalues.size();}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tempEigenvalues.conservativeResize(currentSize\ +\ 2);}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tempEigenvalues(currentSize)\ =\ conjugateEigenvalues[0];}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tempEigenvalues(currentSize\ +\ 1)\ =\ conjugateEigenvalues[1];}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ i\ +=\ 2;}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ currentSize\ =\ tempEigenvalues.size();}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tempEigenvalues.conservativeResize(currentSize\ +\ 1);}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tempEigenvalues(currentSize)\ =\ std::complex<double>(matrix(i,\ i));}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ i\ +=\ 1;}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Sort\ the\ eigenvalues\ in\ descending\ order\ of\ their\ absolute\ values}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ std::sort(tempEigenvalues.data(),\ tempEigenvalues.data()\ +\ tempEigenvalues.size(),\ [](\textcolor{keyword}{const}\ std::complex<double>\ \&a,\ \textcolor{keyword}{const}\ std::complex<double>\ \&b)}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ return\ std::abs(a)\ >\ std::abs(b);\ \});}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Assign\ the\ temporary\ eigenvalues\ to\ the\ class\ member}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>eigenvalues\ =\ tempEigenvalues;}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00170\ \ \ \ \ Eigen::VectorX<std::complex<double>>\ \mbox{\hyperlink{class_q_r_method_ac9d5f50bcb9055f01d5f42315b4361a5}{computeComplexConjugateEigenvalues}}(\textcolor{keyword}{const}\ Eigen::MatrixX<Scalar>\ \&block)}
+\DoxyCodeLine{00171\ \ \ \ \ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Compute\ the\ coefficients\ of\ the\ quadratic\ equation}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ Scalar\ a\ =\ 1;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Coefficient\ of\ λ\string^2}}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ Scalar\ b\ =\ -\/(block(0,\ 0)\ +\ block(1,\ 1));\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Coefficient\ of\ λ}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ Scalar\ c\ =\ block(0,\ 0)\ *\ block(1,\ 1)\ -\/\ block(0,\ 1)\ *\ block(1,\ 0);\ \textcolor{comment}{//\ Constant\ term}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Compute\ the\ discriminant}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ Scalar\ discriminant\ =\ b\ *\ b\ -\/\ Scalar(4)\ *\ a\ *\ c;}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ Eigen::VectorX<std::complex<double>>\ roots(2);}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ if\ Scalar\ is\ a\ complex\ type}}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same<Scalar,\ std::complex<float>>::value\ ||\ std::is\_same<Scalar,\ std::complex<double>>::value)}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ Scalar\ sqrtDiscriminant\ =\ std::sqrt(discriminant);}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ roots[0]\ =\ std::complex<double>((-\/b\ +\ sqrtDiscriminant)\ /\ (Scalar(2)\ *\ a));}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ roots[1]\ =\ std::complex<double>((-\/b\ -\/\ sqrtDiscriminant)\ /\ (Scalar(2)\ *\ a));}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{comment}{//\ Handle\ real\ number\ types}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ std::complex<Scalar>\ complexDiscriminant\ =\ discriminant;}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ std::complex<Scalar>\ sqrtDiscriminant\ =\ std::sqrt(complexDiscriminant);}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ roots[0]\ =\ std::complex<double>((-\/b\ +\ sqrtDiscriminant)\ /\ (Scalar(2)\ *\ a));}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ roots[1]\ =\ std::complex<double>((-\/b\ -\/\ sqrtDiscriminant)\ /\ (Scalar(2)\ *\ a));}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ roots;}
+\DoxyCodeLine{00198\ \ \ \ \ \}}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00201\ \ \ \ \ Eigen::MatrixX<Scalar>\ matrix;}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordtype}{int}\ maxIterations;}
+\DoxyCodeLine{00203\ \ \ \ \ Scalar\ tolerance;}
+\DoxyCodeLine{00204\ \};}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \textcolor{keyword}{template}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_q_r_method}{QRMethod<double>}};}
+\DoxyCodeLine{00207\ \textcolor{keyword}{template}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_q_r_method}{QRMethod<float>}};}
+\DoxyCodeLine{00208\ \textcolor{keyword}{template}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_q_r_method}{QRMethod<std::complex<float>}}>;}
+\DoxyCodeLine{00209\ \textcolor{keyword}{template}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_q_r_method}{QRMethod<std::complex<double>}}>;}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ QRMETHOD\_H}}
+
+\end{DoxyCode}

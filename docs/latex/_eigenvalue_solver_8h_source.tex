@@ -1,0 +1,61 @@
+\doxysection{Eigenvalue\+Solver.\+h}
+\hypertarget{_eigenvalue_solver_8h_source}{}\label{_eigenvalue_solver_8h_source}\index{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/EigenvalueSolver.h@{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/EigenvalueSolver.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ EIGENVALUE\_SOLVER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ EIGENVALUE\_SOLVER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <Eigen/Dense>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <complex>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigenvalue_solver}{EigenvalueSolver}}}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_floating\_point<Scalar>::value\ ||\ std::is\_same<Scalar,\ std::complex<float>>::value\ ||\ std::is\_same<Scalar,\ std::complex<double>>::value,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Scalar\ must\ be\ a\ floating\ point\ or\ complex\ type"{}});}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{class_eigenvalue_solver_a6c498d6e8992255afbcae1c355a8284d}{\string~EigenvalueSolver}}()\ \{\}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigenvalue_solver_a664c54ff72cef228d987f70b6d003875}{setMatrix}}(\textcolor{keyword}{const}\ Eigen::MatrixX<Scalar>\ \&matrix)\ =\ 0;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigenvalue_solver_ac538598cfe094d352d10ff54831755ef}{setMaxIterations}}(\textcolor{keywordtype}{int}\ maxIter)\ =\ 0;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigenvalue_solver_a575feca50c6f7268874836e3447d5668}{setTolerance}}(Scalar\ tol)\ =\ 0;}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigenvalue_solver_afac1b76fc1caaa3cef3d41c516d0951d}{solve}}()}
+\DoxyCodeLine{00064\ \ \ \ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{class_eigenvalue_solver_a4d2ce0911cc9cc1bb2b775da11cccd28}{initialize}}();}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ currentIteration\ =\ 0;}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{do}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{class_eigenvalue_solver_a9258572b6e067623534edde8e81bdb23}{performIteration}}();}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ ++currentIteration;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (!this-\/>\mbox{\hyperlink{class_eigenvalue_solver_ada3394dac3da4ec47379d8114d1ec04e}{hasConverged}}());}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{class_eigenvalue_solver_a0269924d4a373b99791446caba338efd}{obtainResults}}();}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::VectorX<std::complex<double>>\ getEigenvalues()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ eigenvalues;\ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{comment}{//\ Eigen::MatrixX<Scalar>\ getEigenvectors()\ const\ \{\ return\ eigenvectors;\ \}}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::MatrixX<Scalar>\ getEigenvectors()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigenvalue_solver_a4d2ce0911cc9cc1bb2b775da11cccd28}{initialize}}()\ =\ 0;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigenvalue_solver_ada3394dac3da4ec47379d8114d1ec04e}{hasConverged}}()\ =\ 0;}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigenvalue_solver_a9258572b6e067623534edde8e81bdb23}{performIteration}}()\ =\ 0;}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigenvalue_solver_a0269924d4a373b99791446caba338efd}{obtainResults}}()\ =\ 0;}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{bool}\ converged;}
+\DoxyCodeLine{00109\ \ \ \ \ Eigen::VectorX<std::complex<double>>\ eigenvalues;}
+\DoxyCodeLine{00110\ \ \ \ \ Eigen::MatrixX<Scalar>\ eigenvectors;}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{int}\ currentIteration;}
+\DoxyCodeLine{00113\ \};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGENVALUE\_SOLVER\_H}}
+
+\end{DoxyCode}

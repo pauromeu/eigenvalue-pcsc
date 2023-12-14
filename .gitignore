@@ -1,8 +1,5 @@
 build/
 
-docs/html
-docs/latex
-
 .vscode/
 
 .DS_Store

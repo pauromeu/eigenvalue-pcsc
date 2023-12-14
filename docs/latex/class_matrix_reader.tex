@@ -1,0 +1,87 @@
+\doxysection{Matrix\+Reader Class Reference}
+\hypertarget{class_matrix_reader}{}\label{class_matrix_reader}\index{MatrixReader@{MatrixReader}}
+
+
+Abstract base class for matrix readers.  
+
+
+
+
+{\ttfamily \#include $<$Matrix\+Reader.\+h$>$}
+
+Inheritance diagram for Matrix\+Reader\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_matrix_reader}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_matrix_reader_aa06f387ee1045270ee74f61d24977275}{read\+Matrix}} ()=0
+\begin{DoxyCompactList}\small\item\em Reads the matrix from the file. \end{DoxyCompactList}\item 
+virtual Eigen\+::\+Sparse\+Matrix$<$ double $>$ \mbox{\hyperlink{class_matrix_reader_aaf88df4178529abb42ed3852ad3613db}{get\+Sparse\+Matrix}} () const =0
+\begin{DoxyCompactList}\small\item\em Retrieve the Eigen sparse matrix. \end{DoxyCompactList}\item 
+virtual Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{class_matrix_reader_abfddba90eb00383c17d5f150e47eceb8}{get\+Dense\+Matrix}} () const =0
+\begin{DoxyCompactList}\small\item\em Retrieve the Eigen dense matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Abstract base class for matrix readers. 
+
+Defines the interface for reading matrices from various file formats. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_matrix_reader_abfddba90eb00383c17d5f150e47eceb8}\label{class_matrix_reader_abfddba90eb00383c17d5f150e47eceb8} 
+\index{MatrixReader@{MatrixReader}!getDenseMatrix@{getDenseMatrix}}
+\index{getDenseMatrix@{getDenseMatrix}!MatrixReader@{MatrixReader}}
+\doxysubsubsection{\texorpdfstring{getDenseMatrix()}{getDenseMatrix()}}
+{\footnotesize\ttfamily virtual Eigen\+::\+Matrix\+Xd Matrix\+Reader\+::get\+Dense\+Matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Retrieve the Eigen dense matrix. 
+
+\begin{DoxyReturn}{Returns}
+Eigen\+::\+Matrix\+Xd The matrix in dense format. 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_m_t_x_matrix_reader_a7158a91af3ff87354bbb3b59f239ead0}{MTXMatrix\+Reader}}.
+
+\Hypertarget{class_matrix_reader_aaf88df4178529abb42ed3852ad3613db}\label{class_matrix_reader_aaf88df4178529abb42ed3852ad3613db} 
+\index{MatrixReader@{MatrixReader}!getSparseMatrix@{getSparseMatrix}}
+\index{getSparseMatrix@{getSparseMatrix}!MatrixReader@{MatrixReader}}
+\doxysubsubsection{\texorpdfstring{getSparseMatrix()}{getSparseMatrix()}}
+{\footnotesize\ttfamily virtual Eigen\+::\+Sparse\+Matrix$<$ double $>$ Matrix\+Reader\+::get\+Sparse\+Matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Retrieve the Eigen sparse matrix. 
+
+\begin{DoxyReturn}{Returns}
+Eigen\+::\+Sparse\+Matrix$<$double$>$ The matrix in sparse format. 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_m_t_x_matrix_reader_a5fa845e7778e92913e69354da99cb04a}{MTXMatrix\+Reader}}.
+
+\Hypertarget{class_matrix_reader_aa06f387ee1045270ee74f61d24977275}\label{class_matrix_reader_aa06f387ee1045270ee74f61d24977275} 
+\index{MatrixReader@{MatrixReader}!readMatrix@{readMatrix}}
+\index{readMatrix@{readMatrix}!MatrixReader@{MatrixReader}}
+\doxysubsubsection{\texorpdfstring{readMatrix()}{readMatrix()}}
+{\footnotesize\ttfamily virtual void Matrix\+Reader\+::read\+Matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Reads the matrix from the file. 
+
+
+
+Implemented in \mbox{\hyperlink{class_m_t_x_matrix_reader_ac4ab5254b00cc28ebcf57da87c2768c9}{MTXMatrix\+Reader}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/romeu/\+Desktop/cse\+\_\+epfl/ma3/eigenvalue-\/pcsc/include/matrix\+\_\+readers/Matrix\+Reader.\+h\end{DoxyCompactItemize}

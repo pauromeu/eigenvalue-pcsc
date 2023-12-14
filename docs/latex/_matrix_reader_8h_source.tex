@@ -1,0 +1,24 @@
+\doxysection{Matrix\+Reader.\+h}
+\hypertarget{_matrix_reader_8h_source}{}\label{_matrix_reader_8h_source}\index{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/matrix\_readers/MatrixReader.h@{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/matrix\_readers/MatrixReader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ MATRIXREADER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ MATRIXREADER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <Eigen/Sparse>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_matrix_reader}{MatrixReader}}}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{class_matrix_reader}{\string~MatrixReader}}()\ \{\}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_matrix_reader_aa06f387ee1045270ee74f61d24977275}{readMatrix}}()\ =\ 0;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::SparseMatrix<double>\ \mbox{\hyperlink{class_matrix_reader_aaf88df4178529abb42ed3852ad3613db}{getSparseMatrix}}()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::MatrixXd\ \mbox{\hyperlink{class_matrix_reader_abfddba90eb00383c17d5f150e47eceb8}{getDenseMatrix}}()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00034\ \};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MATRIXREADER\_H}}
+
+\end{DoxyCode}

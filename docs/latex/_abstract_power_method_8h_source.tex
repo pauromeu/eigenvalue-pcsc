@@ -1,0 +1,130 @@
+\doxysection{Abstract\+Power\+Method.\+h}
+\hypertarget{_abstract_power_method_8h_source}{}\label{_abstract_power_method_8h_source}\index{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/AbstractPowerMethod.h@{/Users/romeu/Desktop/cse\_epfl/ma3/eigenvalue-\/pcsc/include/algorithms/AbstractPowerMethod.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ ABSTRACT\_POWER\_METHOD\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ ABSTRACT\_POWER\_METHOD\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <Eigen/Dense>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <complex>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}EigenvalueSolver.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}exceptions/SolverException.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_abstract_power_method}{AbstractPowerMethod}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigenvalue_solver}{EigenvalueSolver}}<Scalar>}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{class_eigenvalue_solver}{EigenvalueSolver}}<Scalar>\mbox{\hyperlink{class_eigenvalue_solver}{::EigenvalueSolver}};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ Eigen::VectorX<std::complex<double>>\ getEigenvalues()\textcolor{keyword}{\ const\ override}}
+\DoxyCodeLine{00025\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ eigenvalues.template\ cast<std::complex<double>>();}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00034\ \ \ \ \ Eigen::MatrixX<Scalar>\ \mbox{\hyperlink{class_abstract_power_method_aba213413c66a365b6ed36999f39da5c2}{getEigenvectors}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ eigenvectors;}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_abstract_power_method_a2fd59264b44472e4106bcfbeed3cd86a}{setMatrix}}(\textcolor{keyword}{const}\ Eigen::MatrixX<Scalar>\ \&mat)\ =\ 0;}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_abstract_power_method_afaa89e944cac620e349e00dc292077cb}{setTolerance}}(Scalar\ tol)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00054\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Eigen::NumTraits<Scalar>::Real\ realTolerance\ =\ std::abs(tol);}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ tolerance\ =\ realTolerance;}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_abstract_power_method_acb50254522abfc125b4bda4344f86e67}{setMaxIterations}}(\textcolor{keywordtype}{int}\ maxIter)}
+\DoxyCodeLine{00065\ \ \ \ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ maxIterations\ =\ maxIter;}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00070\ \ \ \ \ Eigen::MatrixX<Scalar>\ matrix;}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{int}\ maxIterations;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{typename}\ Eigen::NumTraits<Scalar>::Real\ tolerance;}
+\DoxyCodeLine{00073\ \ \ \ \ Eigen::MatrixX<Scalar>\ currentVector;}
+\DoxyCodeLine{00074\ \ \ \ \ Eigen::MatrixX<Scalar>\ previousVector;}
+\DoxyCodeLine{00075\ \ \ \ \ Eigen::VectorX<Scalar>\ eigenvalues;}
+\DoxyCodeLine{00076\ \ \ \ \ Eigen::MatrixX<Scalar>\ eigenvectors;}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{bool}\ check\_near(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&a,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&b,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tolerance)}
+\DoxyCodeLine{00079\ \ \ \ \ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::abs(a\ -\/\ b)\ <\ tolerance;}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{bool}\ checkEigenVector()}
+\DoxyCodeLine{00084\ \ \ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same<Scalar,\ std::complex<double>>::value\ ||\ std::is\_same<Scalar,\ std::complex<float>>::value)}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ For\ complex\ number\ types}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ std::complex<double>\ firstEigenvalue\ =\ eigenvalues(0);\ \textcolor{comment}{//\ Use\ eigenvalues\ directly}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ Eigen::VectorX<Scalar>\ actualVector\ =\ eigenvectors.col(0);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ Eigen::VectorX<Scalar>\ result1\ =\ matrix\ *\ actualVector;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ Eigen::VectorX<Scalar>\ result2\ =\ firstEigenvalue\ *\ actualVector;}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ result1.size();\ ++i)}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!check\_near(result1(i).real(),\ result2(i).real(),\ tolerance)\ ||\ !check\_near(result1(i).imag(),\ result2(i).imag(),\ tolerance))}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ For\ real\ number\ types}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ Scalar\ firstEigenvalue\ =\ eigenvalues(0);\ \textcolor{comment}{//\ Use\ eigenvalues\ directly}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ Eigen::VectorX<Scalar>\ actualVector\ =\ eigenvectors.col(0);}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ Eigen::VectorX<Scalar>\ result1\ =\ matrix\ *\ actualVector;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ Eigen::VectorX<Scalar>\ result2\ =\ firstEigenvalue\ *\ actualVector;}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ result1.size();\ ++i)}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!check\_near(result1(i),\ result2(i),\ tolerance))}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_abstract_power_method_a4922cdc16e9699fabf2980ebde9df7a3}{hasConverged}}()}
+\DoxyCodeLine{00130\ \ \ \ \ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>currentIteration\ >=\ maxIterations)}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{class_abstract_power_method_a074145e5f9b7bba3b4badae2444f9657}{obtainResults}}();}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Eigen::NumTraits<Scalar>::Real\ diff\ =\ (previousVector\ -\/\ currentVector).norm();}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ isEigenVector\ =\ checkEigenVector();}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (diff\ >\ tolerance\ \&\&\ !isEigenVector)}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Algorithm\ did\ not\ converge"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}last\ diff\ was\ norm\ of:\ ("{}}\ <<\ previousVector\ <<\ \textcolor{stringliteral}{"{}\ -\/\ "{}}\ <<\ currentVector\ <<\ \textcolor{stringliteral}{"{})\ =\ "{}}\ <<\ diff\ <<\ std::endl;}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}tolerance\ is:\ "{}}\ <<\ tolerance\ <<\ std::endl;}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Non-\/convergence\ result:\(\backslash\)n-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\(\backslash\)n"{}};}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Eigenvalue:\ "{}}\ <<\ this-\/>eigenvalues\ <<\ std::endl;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Eigenvector:\ "{}}\ <<\ this-\/>eigenvectors\ <<\ std::endl;}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{class_iteration_limit_exceeded}{IterationLimitExceeded}}(\textcolor{stringliteral}{"{}Iteration\ limit\ exceeded\ before\ convergence."{}});}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Eigen::NumTraits<Scalar>::Real\ diff\ =\ (previousVector\ -\/\ currentVector).norm();}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ diff\ <\ tolerance\ ||\ this-\/>currentIteration\ >=\ maxIterations;}
+\DoxyCodeLine{00149\ \ \ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_abstract_power_method_a4cd27a187ca517837cae4c3d2dc34857}{performIteration}}()\ =\ 0;}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_abstract_power_method_a917fb6dda82b47b5375424123dcef374}{initialize}}()}
+\DoxyCodeLine{00159\ \ \ \ \ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ currentVector\ =\ Eigen::MatrixX<Scalar>::Random(matrix.rows(),\ 1);}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ previousVector\ =\ currentVector;}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_abstract_power_method_a074145e5f9b7bba3b4badae2444f9657}{obtainResults}}()\ \textcolor{keyword}{override}\ =\ 0;}
+\DoxyCodeLine{00170\ \};}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ ABSTRACT\_POWER\_METHOD\_H}}
+
+\end{DoxyCode}
