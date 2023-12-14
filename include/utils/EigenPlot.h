@@ -64,4 +64,6 @@ void plotEigenvalues(const std::string &matrixName, const std::string &scriptNam
     }
 
     std::remove(tempScriptFilename.c_str());
+
+    std::cout << "Gnuplot script executed successfully: " << scriptFilename << std::endl;
 }
