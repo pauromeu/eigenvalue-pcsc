@@ -109,7 +109,17 @@ void writeEigenvectorsToFile(const EigenvalueSolver<Scalar> *solver, const std::
     std::ofstream file(filename);
     if (file.is_open())
     {
-        const Eigen::MatrixX<Scalar> &eigenvectors = solver->getEigenvectors();
+        Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> eigenvectors;
+        try
+        {
+            eigenvectors = solver->getEigenvectors();
+        }
+        catch (const NotImplementedSolverException &e) // QR method does not compute eigenvectors, don't write to file but don't throw exception
+        {
+            std::cout << "[WARNING]: This solver does not compute eigenvectors." << std::endl;
+            return;
+        }
+
         for (int i = 0; i < eigenvectors.rows(); ++i)
         {
             for (int j = 0; j < eigenvectors.cols(); ++j)
