@@ -1,12 +1,12 @@
-#include <algorithms/EigenvalueSolver.h>
-
 #ifndef QRMETHOD_H
 #define QRMETHOD_H
 
+#include <algorithms/EigenvalueSolver.h>
 #include <iostream>
 #include "EigenvalueSolver.h"
 #include <Eigen/Dense>
 #include <cmath>
+#include <exceptions/SolverException.h>
 
 template <typename Scalar>
 class QRMethod : public EigenvalueSolver<Scalar>
@@ -26,11 +26,12 @@ public:
      *
      * @return The eigenvectors of the matrix
      *
-     * @note This function is not yet supported for the QR method and will throw an exception.
+     * @note This function throws a NotImplementedSolverException because the QR method does not support computing the eigenvectors.
      */
     Eigen::MatrixX<Scalar> getEigenvectors() const override
     {
-        throw std::runtime_error("Eigenvectors are not supported for the QR method.");
+        throw NotImplementedSolverException("Eigenvectors are not supported for the QR method.",
+                                            "Use a different method to obtain the eigenvectors.");
     }
 
     /**
