@@ -37,7 +37,7 @@ protected:
     {
     }
 
-    bool hasConverged() const
+    bool hasConverged()
     {
         if (this->currentIteration >= maxIterations)
         {

@@ -36,10 +36,11 @@ public:
 
 protected:
     virtual void initialize() = 0;
-    virtual bool hasConverged() const = 0;
+    virtual bool hasConverged() = 0;
     virtual void performIteration() = 0;
     virtual void obtainResults() = 0;
 
+    bool converged;
     Eigen::VectorX<std::complex<double>> eigenvalues;
     Eigen::MatrixX<Scalar> eigenvectors;
 
