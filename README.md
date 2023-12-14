@@ -184,7 +184,7 @@ Before building, ensure you have the following installed:
 2. A C++ compiler compatible with CMake (GCC, Clang, MSVC, etc.)
 3. Gnuplot (version 3.2 or higher)
 
-This project also makes use of depencies included as submodules:
+This project also makes use of depencies included as submodules. No need to manually install them.
 
 1. Eigen: A C++ template library for linear algebra.
 2. Google Test: A C++ testing framework for unit testing.
