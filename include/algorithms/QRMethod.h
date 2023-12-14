@@ -74,7 +74,9 @@ protected:
      *
      * @note This function does nothing for the QR method.
      */
-    void initialize() {}
+    void initialize()
+    {
+    }
 
     /**
      * @brief Check if the solver has converged.
@@ -83,7 +85,8 @@ protected:
      *
      * @return True if the solver has converged, false otherwise.
      */
-    bool hasConverged() const
+    bool hasConverged()
+
     {
         if (this->currentIteration >= maxIterations)
         {

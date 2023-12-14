@@ -82,19 +82,20 @@ protected:
      * Perform any variable initialization here
      */
     virtual void initialize() = 0;
-
-    /**
+  
+     /**
      * @brief Check if the solver has converged
      * Using the current iteration and the tolerance, check if the solver has converged to the desired tolerance
      *
      * @return true if the solver has converged, false otherwise
      */
-    virtual bool hasConverged() const = 0;
+    virtual bool hasConverged() = 0;
 
     /**
      * @brief Perform a single iteration of the solver
      * All solver are iterative. This function performs a single iteration of the solver.
      */
+
     virtual void performIteration() = 0;
 
     /**
@@ -104,6 +105,7 @@ protected:
      */
     virtual void obtainResults() = 0;
 
+    bool converged;
     Eigen::VectorX<std::complex<double>> eigenvalues;
     Eigen::MatrixX<Scalar> eigenvectors;
 
