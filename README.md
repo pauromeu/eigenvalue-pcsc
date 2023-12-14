@@ -15,10 +15,141 @@ The project includes the following key features:
    - A technique for finding the smallest eigenvalue of a matrix.
 
 3. **Power and Inverse Power Methods with Shift**:
-   - An enhancement of the basic methods, incorporating a shift to accelerate convergence.
+   - An enhancement of the basic methods, incorporating a shift to accelerate convergence and find eigenvalues that are not in the extreme of the spectrum.
 
 4. **QR Method**:
    - An algorithm to compute all eigenvalues of a matrix by decomposing it into a product of an orthogonal matrix `Q` and an upper triangular matrix `R`.
+
+
+### Method Capabilities
+
+| Method                        | # Eigenvalues | # Eigenvectors | Real Matrix Support | Complex Matrix Support | Example Usage                            |
+| ----------------------------- | ------------- | --------------- | ------------------- | ----------------------- | ----------------------------------------- |
+| Power Method                  | 1             | 1               | ✅                  | ✅                      | [Example](#power-method)              |
+| Inverse Power Method          | 1             | 1               | ✅                  | ✅                      | [Example](#inverse-power-method)      |
+| Shifted Power Method          | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example](#shifted-power-method)      |
+| Shifted Inverse Power Method  | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example](#shifted-inverse-power-method) |
+| QR Method                     | All      | ❌        | ✅                  | ✅                      | [Example](#qr-method)                 |
+
+### Available Options:
+
+| Flag              | Description                                                   | Compulsory | Default Value   | Example Usage                     |
+| ----------------- | ------------------------------------------------------------- | ---------- | --------------- | ---------------------------------- |
+| `--solver`    | Eigenvalue solver method to use.               | Yes        | -               | `--solver=pm`                        |
+| `--matrix`     | Name of the matrix file inside `data/matrix` in `mtx` format.         | Yes        | -               | `--matrix=can_24`              |
+| `--type`    | Type of solver used. Only two valid types: `real` and `complex`.      | No         | `real`   | `--type=complex`            |
+| `--tolerance`    | Tolerance of the solver for convergence check. | No         | `1e-6`           | `--tolerance=1e-8`                           |
+| `--shift`     | Shift value for Shifted Methods.                | For Shifted Methods         | `0.0`           | `--shift=1.0`                           |
+| `--maxIters`      | Number of maximum iterations            | No         | 10000               | `--maxIters=1000`                               |
+
+### Program Workflow
+
+1. **Input Data**:
+   - Place the matrix for which you want to compute eigenvalues and eigenvectors inside the folder `data/matrix/`.
+   - Currently, the program supports matrices in the `.mtx` format.
+
+2. **Running the Solver**:
+   - The solver is executed through the command line interface.
+   - You need to specify both the matrix and the solver you want to use.
+   - Refer to the examples section below for detailed usage instructions.
+
+3. **Output Results**:
+   - The results are stored in the `results/` folder.
+   - For each input matrix named `mat`, three main result files are provided:
+     - `mat_eigenvalues.txt`: Contains the eigenvalue(s) of the matrix `mat`.
+     - `mat_eigenvectors.txt`: Contains the eigenvector(s) of the matrix `mat`.
+     - `mat_spectrum.png`: Presents a plot of the spectrum of the eigenvalue(s) of the matrix `mat`.
+
+
+### Examples
+
+In this section, some examples of usage are provided. All the examples use demo matrices that can be find inside the folder `data/matrix/`.
+
+#### 1. Find the largest eigenvalue and its associate eigenvector of a matrix.
+
+To find the dominant eigenvalue (the one with the maximum absolute value) we would use **Power Method**. So, this is the comman we would run from the root folder:
+
+```bash
+build/Eigenvalue-PCSC --matrix=can_24 --solver=pm
+```
+
+This is the simplest command we can write. We are specifying the only 2 compulsory commands: the matrix and the solver. After running this, the expected output are the files with the larger eigenvalue and its correspondant eigenvalue.
+
+#### 2. Find all the eigenvalues of a matrix
+
+The only method of our solver that permits to obtain all the eigenvalues at once is the **QR method**. In this section we present an example on how to use it for both real and complex matrices. However, this method won't provide the eigenvectors.
+
+##### 2.1 Real matrix
+
+Continuing with the same matrix. This is how we would find all eigenvectors.
+
+```bash
+build/Eigenvalue-PCSC --matrix=can_24 --solver=qr --maxIters=1000 --tol=1e-5
+```
+
+Note that in this case we added two optional arguments. We would get something like follows as a solution:
+
+
+
+##### 2.2 Complex matrix
+
+For the complex case, we have to use an input complex matrix. Let's take `qc324` as example. 
+
+**Important**: The solver type must be fixed to `complex` or an error will be raised.
+
+```bash
+build/Eigenvalue-PCSC --matrix=qc324 --solver=qr --type=complex --maxIters=1000 --tol=1e-5
+```
+
+This is the result to obtain:
+
+#### 3. Shifting to get other eigenvectors
+
+Now, let's focus on a case were we want to obtain all the eigenvectors. Since we can't use QR method to obtain them. We need to get them one by one with the Shifted method (we are aware it's not ideal, but at least they can be obtained). Let's study the matrix `dum3`. This matrix is as follows:
+
+$$ dum3 = 
+\begin{bmatrix}
+0 & 11.5 & -5 \\
+-2 & 17 & -7 \\
+-4 & 2 & -10.1 \\
+\end{bmatrix}
+$$
+
+The eigenvalues and eigenvector are as follows:
+
+$$
+\begin{align*}
+\lambda_1 &\approx \text{4.4082} & \quad v_1 &\approx \begin{bmatrix} 0.3352 \\ -0.4978 \\ -0.7998 \end{bmatrix} \\
+\lambda_2 &\approx \text{1.7322} & \quad v_2 &\approx \begin{bmatrix} -0.1329 \\ -0.4274 \\ -0.8942 \end{bmatrix} \\
+\lambda_3 &\approx \text{0.7596} & \quad v_3 &\approx \begin{bmatrix} 0.3643 \\ 0.4060 \\ 0.8380 \end{bmatrix}
+\end{align*}
+$$
+
+So, let's find the 3 eigenvalues and the 3 eigenvectors. We can use **Power Method** to get the biggest one.
+
+```bash
+build/Eigenvalue-PCSC --matrix=dum3 --solver=pm
+```
+
+Similarly, we can find the smallest by using **Inverse Power Method**.
+
+```bash
+build/Eigenvalue-PCSC --matrix=dum3 --solver=pm
+```
+
+Finally, we can use any of the Shifted methods to obtain the non-exteme ones. The shift must be close to the value of target eigenvelue (closer than to any other). In this case, we know the analytical value of `λ2` so we can just use it. We could use **QR method** to get this value. We can use `shift=2.0`. So, the following command using **Inverse Power Method with Shift** (we could also use **Power Method with Shift**), will provide us with the second eigenvalue and its correspondant eigenvector.
+
+```bash
+build/Eigenvalue-PCSC --matrix=dum3 --solver=ims --shift=2.0
+```
+
+That's it! Now we have all the eigenvalues and eigenvectors of `dum3`.
+
+
+
+
+
+
 
 ## Cloning the repository
 
