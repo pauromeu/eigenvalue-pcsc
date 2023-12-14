@@ -1,4 +1,0 @@
-var searchData=
-[
-  ['obtainresults_0',['obtainresults',['../class_abstract_power_method.html#a074145e5f9b7bba3b4badae2444f9657',1,'AbstractPowerMethod::obtainResults()'],['../class_eigenvalue_solver.html#a0269924d4a373b99791446caba338efd',1,'EigenvalueSolver::obtainResults()'],['../class_inverse_power_method.html#acd9d9016085f61b24cc858bfed872dc8',1,'InversePowerMethod::obtainResults()'],['../class_inverse_power_method_with_shift.html#a95025eb346b33cd9d5f6066145705bf1',1,'InversePowerMethodWithShift::obtainResults()'],['../class_power_method.html#a727ebce3e4575428a702648842c2057d',1,'PowerMethod::obtainResults()'],['../class_power_method_with_shift.html#a9f8f46a4b228f0585c674c5721e00a7f',1,'PowerMethodWithShift::obtainResults()'],['../class_q_r_method.html#a43385ddc7f4da4c9596130076b7a8608',1,'QRMethod::obtainResults()']]]
-];
