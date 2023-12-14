@@ -12,3 +12,5 @@ docs/latex
 cmake-build-debug/
 
 results/*.txt
+results/*.dat
+results/*.png

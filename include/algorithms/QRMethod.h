@@ -12,32 +12,81 @@ template <typename Scalar>
 class QRMethod : public EigenvalueSolver<Scalar>
 {
 public:
+    /**
+     * @brief Construct a new QR Method object
+     *
+     * @param maxIterations The maximum number of iterations to perform
+     * @param tol The tolerance for the solver
+     * @return void
+     */
     QRMethod(int maxIterations = 100000, Scalar tol = 1e-6) : maxIterations(maxIterations), tolerance(tol) {}
 
+    /**
+     * @brief Get the eigenvectors.
+     *
+     * @return The eigenvectors of the matrix
+     *
+     * @note This function is not yet supported for the QR method and will throw an exception.
+     */
     Eigen::MatrixX<Scalar> getEigenvectors() const override
     {
-        return this->eigenvectors;
+        throw std::runtime_error("Eigenvectors are not supported for the QR method.");
     }
 
+    /**
+     * @brief Set the matrix to solve the eigenvalue problem for.
+     *
+     * @param matrix The matrix to solve the eigenvalue problem for.
+     */
     void setMatrix(const Eigen::MatrixX<Scalar> &matrix)
     {
         this->matrix = matrix;
     }
+
+    /**
+     * @brief Set the maximum number of iterations to perform.
+     * This function sets the maximum number of iterations to perform before the solver stops.
+     * The solver will stop if it has converged before the maximum number of iterations is reached.
+     *
+     * @param maxIter The maximum number of iterations to perform
+     */
     void setMaxIterations(int maxIter)
     {
         this->maxIterations = maxIter;
     }
+
+    /**
+     * @brief Set the tolerance for the solver.
+     * This function sets the tolerance for the solver. The solver will stop when the residual is less than the tolerance.
+     *
+     * @param tol The tolerance for the solver
+     */
     void setTolerance(Scalar tol)
     {
         this->tolerance = tol;
     }
 
 protected:
+    /**
+     * @brief Initialize the solver.
+     *
+     * This function initializes the solver. It is called before the first iteration.
+     *
+     * @note This function does nothing for the QR method.
+     */
     void initialize()
     {
     }
 
+    /**
+     * @brief Check if the solver has converged.
+     *
+     * This function checks if the solver has converged to the desired tolerance.
+     *
+     * @return True if the solver has converged, false otherwise.
+     */
     bool hasConverged()
+
     {
         if (this->currentIteration >= maxIterations)
         {
@@ -47,15 +96,30 @@ protected:
         return false;
     }
 
+    /**
+     * @brief Perform an iteration of the QR method.
+     *
+     * This function performs an iteration of the QR method.
+     * First, the QR decomposition of the current matrix is computed.
+     * Then, the matrix is updated to be the product of the R and Q matrices.
+     * This process is supposed to converge to a triangular matrix with the eigenvalues on the diagonal.
+     */
     void performIteration()
     {
-
         Eigen::HouseholderQR<Eigen::MatrixX<Scalar>> qr = matrix.householderQr();
         Eigen::MatrixX<Scalar> Q = qr.householderQ();
         Eigen::MatrixX<Scalar> R = qr.matrixQR().template triangularView<Eigen::Upper>();
         matrix = R * Q;
     }
 
+    /**
+     * @brief Obtain the results of the QR method.
+     *
+     * This function obtains the results of the QR method.
+     * It first obtains the eigenvalues of the matrix.
+     * Then, it sorts the eigenvalues in descending order of their absolute values.
+     * Finally, it assigns the eigenvalues to the class member.
+     */
     void obtainResults()
     {
         {
@@ -93,12 +157,23 @@ protected:
         }
     }
 
+    /**
+     * @brief Compute the complex conjugate eigenvalues of a 2x2 matrix.
+     *
+     * This function computes the complex conjugate eigenvalues of a 2x2 matrix.
+     * It uses the quadratic formula to compute the eigenvalues.
+     *
+     * @param block The 2x2 matrix to compute the eigenvalues of.
+     * @return The complex conjugate eigenvalues of the matrix.
+     */
     Eigen::VectorX<std::complex<double>> computeComplexConjugateEigenvalues(const Eigen::MatrixX<Scalar> &block)
     {
+        // Compute the coefficients of the quadratic equation
         Scalar a = 1;                                                     // Coefficient of λ^2
         Scalar b = -(block(0, 0) + block(1, 1));                          // Coefficient of λ
         Scalar c = block(0, 0) * block(1, 1) - block(0, 1) * block(1, 0); // Constant term
 
+        // Compute the discriminant
         Scalar discriminant = b * b - Scalar(4) * a * c;
 
         Eigen::VectorX<std::complex<double>> roots(2);
