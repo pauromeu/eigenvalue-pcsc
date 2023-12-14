@@ -91,7 +91,7 @@ protected:
     {
         if (this->currentIteration >= maxIterations)
         {
-            std::cout << "Warning: QR method did not converge after " << maxIterations << " iterations." << std::endl;
+            // std::cout << "Warning: QR method did not converge after " << maxIterations << " iterations." << std::endl;
             return true;
         }
         return false;
