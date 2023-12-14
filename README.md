@@ -125,7 +125,7 @@ Now, let's focus on a case were we want to obtain all the eigenvectors. Since we
 
 $$ dum3 = 
 \begin{bmatrix}
-0 & 11.5 & -5 \\
+0 & 11 & -5 \\
 -2 & 17 & -7 \\
 -4 & 2 & -10.1 \\
 \end{bmatrix}
