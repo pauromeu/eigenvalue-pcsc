@@ -75,20 +75,36 @@ build/Eigenvalue-PCSC --matrix=can_24 --solver=pm
 
 This is the simplest command we can write. We are specifying the only 2 compulsory commands: the matrix and the solver. After running this, the expected output are the files with the larger eigenvalue and its correspondant eigenvalue.
 
-#### 2. Find all the eigenvalues of a matrix
+#### 2. Finding all eigenvalues of a matrix
 
-The only method of our solver that permits to obtain all the eigenvalues at once is the **QR method**. In this section we present an example on how to use it for both real and complex matrices. However, this method won't provide the eigenvectors.
+The only method in our solver that allows you to obtain all eigenvalues at once is the **QR method**. In this section we present an example of how to use it for both real and complex matrices. However, this method will not provide the eigenvectors.
 
 ##### 2.1 Real matrix
 
-Continuing with the same matrix. This is how we would find all eigenvectors.
+Continuing with the same matrix. This way we would find all the eigenvectors.
 
 ```bash
 build/Eigenvalue-PCSC --matrix=can_24 --solver=qr --maxIters=1000 --tol=1e-5
 ```
 
-Note that in this case we added two optional arguments. We would get something like follows as a solution:
+Note that in this case we added two optional arguments. We will get the plots of the eigenvalues in the complex plane and their spectrum.
 
+<table>
+  <tr>
+    <td>
+      <img src="results/can_24_eigenvalues.png" alt="Image 1" style="width: 100%;" />
+      <p align="center">
+        <sup>Figure 1. Complex plane</sup>
+      </p>
+    </td>
+    <td>
+      <img src="results/can_24_spectrum.png" alt="Image 2" style="width: 100%;" />
+      <p align="center">
+        <sup>Figure 2. Spectrum</sup>
+      </p>
+    </td>
+  </tr>
+</table>
 
 
 ##### 2.2 Complex matrix
@@ -125,30 +141,25 @@ $$
 \end{align*}
 $$
 
-So, let's find the 3 eigenvalues and the 3 eigenvectors. We can use **Power Method** to get the biggest one.
+So, let's find the three eigenvalues and the corresponding eigenvectors. We can use the **Power Metho**d** to obtain the largest one.
 
 ```bash
 build/Eigenvalue-PCSC --matrix=dum3 --solver=pm
 ```
 
-Similarly, we can find the smallest by using **Inverse Power Method**.
+Similarly, we can find the smallest by using the **Inverse Power Method**.
 
 ```bash
 build/Eigenvalue-PCSC --matrix=dum3 --solver=pm
 ```
 
-Finally, we can use any of the Shifted methods to obtain the non-exteme ones. The shift must be close to the value of target eigenvelue (closer than to any other). In this case, we know the analytical value of `λ2` so we can just use it. We could use **QR method** to get this value. We can use `shift=2.0`. So, the following command using **Inverse Power Method with Shift** (we could also use **Power Method with Shift**), will provide us with the second eigenvalue and its correspondant eigenvector.
+Finally, we can use any of the shifted methods to obtain the non-extreme eigenvalues. The shift must be close to the value of the target eigenvalue (closer than any other). In this case, we know the analytical value of `λ2` so we can use it just like that. We could use **QR method** to obtain this value. Let's use `shift=2.0`. So, the following command using **Inverse Power Method with Shift** (we could also use **Power Method with Shift**), will give us the second eigenvalue and its corresponding eigenvector.
 
 ```bash
 build/Eigenvalue-PCSC --matrix=dum3 --solver=ims --shift=2.0
 ```
 
 That's it! Now we have all the eigenvalues and eigenvectors of `dum3`.
-
-
-
-
-
 
 
 ## Cloning the repository
