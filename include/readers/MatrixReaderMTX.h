@@ -68,6 +68,8 @@ private:
         std::string line;
         std::getline(file, line);
 
+        isComplex = false;
+        isSymmetric = false;
         if (line.find("complex") != std::string::npos)
         {
             std::cout << "Found complex" << std::endl;
