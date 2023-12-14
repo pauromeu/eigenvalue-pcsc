@@ -146,16 +146,14 @@ void runSolver(EigenvalueSolver<Scalar> *solver, const std::string &matrixFile)
     solver->setMatrix(matrix);
     solver->solve();
 
-    // save eigenvalues to file
+    // Save eigenvalues to file
     writeResultsToFile(solver, reader.getMatrixName());
 
-    // save eigenvectors to file, qr method does not have eigenvectors
+    // Save eigenvectors to file
     writeEigenvectorsToFile(solver, reader.getMatrixName());
 
-    // gnuploting the spectrum of eigenvalues (only one eigenvalue for power method)
+    // Gnuploting the spectrum and the complex plane of the eigenvalues
     exportEigenvaluesToGnuplot(solver, reader.getMatrixName());
-
-    // gnuploting the convergence of the method
     plotEigenvalues(reader.getMatrixName(), "eigenvalues");
     plotEigenvalues(reader.getMatrixName(), "spectrum");
 
