@@ -1,3 +1,33 @@
+/**
+ * Program name: Eigenvalues-PCSC
+ * Description: A program that computes the eigenvalues and eigenvectors of a matrix using different methods. This program is part of the PCSC course at EPFL (MATH-458).
+ * Authors: 1. Haolong Li 2. Pau Romeu Llordella
+ * Date created: December 1, 2023
+ * Last modified: December 15, 2023
+ * Version: 1.0.0
+ *
+ * Usage: build/Eigenvalues-PCSC --sovler=<solver> --matrix=<matrix> [options]
+ * Options:
+ * --solver=<solver>       The solver to use. It can be one of the following: qr, pm, im, pms, ims.
+ * --matrix=<matrix>       The matrix to use. The matrix must be in the data/matrix/ folder and must be in Matrix Market format. Only the name of the matrix is required, not the full path.
+ * --type=<type>           The type of the matrix. It can be either real or complex. If not provided, it is assumed to be real.
+ * --maxIter=<maxIter>     The maximum number of iterations. If not provided, it is assumed to be 100000.
+ * --tol=<tol>             The tolerance. If not provided, it is assumed to be 1e-6.
+ * --shift=<shift>         The shift to use for shifted methods. If not provided, it is assumed to be 0. It is compulsory for shifted methods.
+ *
+ * Examples:
+ * 1. Compute the eigenvalues of the matrix can_24 using the QR method:
+ * build/Eigenvalues-PCSC --solver=qr --matrix=can_24 --type=real --maxIter=1000 --tol=1e-6
+ *
+ * 2. Compute the greatest eigenvalue and its eigenvector of the matrix can_24 using the power method:
+ * build/Eigenvalues-PCSC --solver=pm --matrix=can_24
+ *
+ * 3. Compute the smallest eigenvalue and its eigenvector of the matrix can_24 using the inverse power method:
+ * build/Eigenvalues-PCSC --solver=im --matrix=can_24
+ *
+ * For more information, please refer to the README.md file.
+ */
+
 #include <iostream>
 #include <map>
 #include <string>
