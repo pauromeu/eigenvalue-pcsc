@@ -13,6 +13,19 @@
 #include <utils/EigenExport.h>
 #include <utils/EigenPlot.h>
 
+/**
+ * @brief Creates an instance of the solver based on the solver name provided.
+ *
+ * The solver parameters are also set.
+ *
+ * @tparam Scalar The scalar type of the solver. It can be either double or std::complex<double>.
+ * @param solverName The name of the solver. It can be one of the following: qr, pm, im, pms, ims.
+ * @param parser The argument parser used to get the solver parameters.
+ *
+ * @return A pointer to the solver instance.
+ *
+ * @throw SolverInitializationException If the solver name is invalid or the shift is not provided for shifted methods.
+ */
 template <typename Scalar>
 EigenvalueSolver<Scalar> *createSolver(const std::string &solverName, ArgumentParser &parser)
 {
@@ -59,57 +72,76 @@ EigenvalueSolver<Scalar> *createSolver(const std::string &solverName, ArgumentPa
                                             "Use --solver=<solver> to use a valid solver.\nThe available solvers are: qr, pm, im, pms, ims.");
     }
 
+    // Set solver parameters
     solver->setTolerance(tol);
     solver->setMaxIterations(maxIter);
 
     return solver;
 }
 
+/**
+ * @brief Runs the solver on the matrix provided.
+ *
+ * The solver is run on the matrix provided by the matrixFile parameter.
+ * The results are written to files and the spectrum of eigenvalues is plotted.
+ *
+ * @tparam Scalar The scalar type of the solver. It can be either double or std::complex<double>.
+ * @param solver The solver instance.
+ * @param matrixFile The path to the matrix file.
+ *
+ * @throw SolverInitializationException If the matrix and solver types do not match.
+ * @throw IOFileSolverException If the results folder does not exist or the program does not have write permissions.
+ */
 template <typename Scalar>
 void runSolver(EigenvalueSolver<Scalar> *solver, const std::string &matrixFile)
 {
-    try
+
+    MatrixReaderMTX<Scalar> reader(matrixFile);
+    auto matrix = reader.getDense();
+    reader.printMetadata();
+
+    bool isMatrixComplex = reader.isComplexMatrix();
+    bool isSolverComplex = std::is_same<Scalar, std::complex<double>>::value;
+
+    // Check if both matrix and solver are either complex or real
+    if (isMatrixComplex != isSolverComplex)
     {
-        MatrixReaderMTX<Scalar> reader(matrixFile);
-        auto matrix = reader.getDense();
-        reader.printMetadata();
+        std::string matrixType = isMatrixComplex ? "complex" : "real";
+        std::string solverType = isSolverComplex ? "complex" : "real";
 
-        bool isMatrixComplex = reader.isComplexMatrix();
-        bool isSolverComplex = std::is_same<Scalar, std::complex<double>>::value;
-
-        // Check if both matrix and solver are either complex or real
-        if (isMatrixComplex != isSolverComplex)
-        {
-            std::string matrixType = isMatrixComplex ? "complex" : "real";
-            std::string solverType = isSolverComplex ? "complex" : "real";
-
-            throw SolverInitializationException("Matrix and solver types do not match. You are trying to use a " + solverType + " solver on a " + matrixType + " matrix.",
-                                                "Use --type=" + matrixType + " to use the correct solver.");
-        }
-
-        solver->setMatrix(matrix);
-        solver->solve();
-
-        // save eigenvalues to file
-        writeResultsToFile(solver, reader.getMatrixName());
-
-        // save eigenvectors to file, qr method does not have eigenvectors
-        writeEigenvectorsToFile(solver, reader.getMatrixName());
-
-        // gnuploting the spectrum of eigenvalues (only one eigenvalue for power method)
-        exportEigenvaluesToGnuplot(solver, reader.getMatrixName());
-
-        // gnuploting the convergence of the method
-        plotEigenvalues(reader.getMatrixName(), "eigenvalues");
-        plotEigenvalues(reader.getMatrixName(), "spectrum");
+        throw SolverInitializationException("Matrix and solver types do not match. You are trying to use a " + solverType + " solver on a " + matrixType + " matrix.",
+                                            "Use --type=" + matrixType + " to use the correct solver.");
     }
-    catch (const std::exception &e)
-    {
-        std::cerr << "Error in runSolver: " << e.what() << std::endl;
-    }
+
+    solver->setMatrix(matrix);
+    solver->solve();
+
+    // save eigenvalues to file
+    writeResultsToFile(solver, reader.getMatrixName());
+
+    // save eigenvectors to file, qr method does not have eigenvectors
+    writeEigenvectorsToFile(solver, reader.getMatrixName());
+
+    // gnuploting the spectrum of eigenvalues (only one eigenvalue for power method)
+    exportEigenvaluesToGnuplot(solver, reader.getMatrixName());
+
+    // gnuploting the convergence of the method
+    plotEigenvalues(reader.getMatrixName(), "eigenvalues");
+    plotEigenvalues(reader.getMatrixName(), "spectrum");
+
     delete solver;
 }
 
+/**
+ * @brief The main function of the program.
+ *
+ * The main function of the program. It parses the command line arguments and runs the solver.
+ *
+ * @param argc The number of command line arguments.
+ * @param argv The command line arguments.
+ *
+ * @return 0 if the program ran successfully, 1 otherwise.
+ */
 int main(int argc, char **argv)
 {
     try
