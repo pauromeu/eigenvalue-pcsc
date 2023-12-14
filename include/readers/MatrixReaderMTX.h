@@ -54,15 +54,15 @@ private:
         // Assert file is open
         if (!file.is_open())
         {
-            throw IOFileException("Failed to open file: " + filename,
-                                  "Make sure the matrix is in the data/matrix/ folder.");
+            throw IOFileSolverException("Failed to open file: " + filename,
+                                        "Make sure the matrix is in the data/matrix/ folder.");
         }
 
         // Assert file extension is .mtx
         if (filename.substr(filename.find_last_of(".") + 1) != "mtx")
         {
-            throw IOFileException("Invalid file extension: " + filename,
-                                  "Make sure the matrix is in the Matrix Market format (.mtx).");
+            throw IOFileSolverException("Invalid file extension: " + filename,
+                                        "Make sure the matrix is in the Matrix Market format (.mtx).");
         }
 
         name = filename.substr(filename.find_last_of("/") + 1, filename.find_last_of(".") - filename.find_last_of("/") - 1);

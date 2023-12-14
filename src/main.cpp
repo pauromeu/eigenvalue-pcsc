@@ -10,7 +10,6 @@
 #include <fstream>
 #include <readers/MatrixReaderMTX.h>
 #include <readers/ArgumentParser.h>
-#include <exceptions/SolverException.h>
 
 template <typename Scalar>
 EigenvalueSolver<Scalar> *createSolver(const std::string &solverName, ArgumentParser &parser)
@@ -77,8 +76,8 @@ void writeResultsToFile(const EigenvalueSolver<Scalar> *solver, const std::strin
     }
     else
     {
-        throw IOFileException("Failed to open file: " + filename,
-                              "Make sure the results/ folder exists in the root directory.");
+        throw IOFileSolverException("Failed to open file: " + filename,
+                                    "Make sure the results/ folder exists in the root directory.");
     }
 }
 
@@ -98,8 +97,8 @@ void exportEigenvaluesToGnuplot(const EigenvalueSolver<Scalar> *solver, const st
     }
     else
     {
-        throw IOFileException("Failed to open file: " + filename,
-                              "Make sure the results/ folder exists in the root directory.");
+        throw IOFileSolverException("Failed to open file: " + filename,
+                                    "Make sure the results/ folder exists in the root directory.");
     }
 }
 
@@ -133,8 +132,8 @@ void writeEigenvectorsToFile(const EigenvalueSolver<Scalar> *solver, const std::
     }
     else
     {
-        throw IOFileException("Failed to open file: " + filename,
-                              "Make sure the results/ folder exists in the root directory.");
+        throw IOFileSolverException("Failed to open file: " + filename,
+                                    "Make sure the results/ folder exists in the root directory.");
     }
 }
 
