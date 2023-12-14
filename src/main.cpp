@@ -10,6 +10,8 @@
 #include <fstream>
 #include <readers/MatrixReaderMTX.h>
 #include <readers/ArgumentParser.h>
+#include <utils/EigenExport.h>
+#include <utils/EigenPlot.h>
 
 template <typename Scalar>
 EigenvalueSolver<Scalar> *createSolver(const std::string &solverName, ArgumentParser &parser)
@@ -64,90 +66,6 @@ EigenvalueSolver<Scalar> *createSolver(const std::string &solverName, ArgumentPa
 }
 
 template <typename Scalar>
-void writeResultsToFile(const EigenvalueSolver<Scalar> *solver, const std::string &matrixName)
-{
-    std::string filename = "results/" + matrixName + "_values.txt";
-    std::ofstream file(filename);
-    if (file.is_open())
-    {
-        file << solver->getEigenvalues();
-        file.close();
-        std::cout << "Results written to file: " << filename << std::endl;
-    }
-    else
-    {
-        throw IOFileSolverException("Failed to open file: " + filename,
-                                    "Make sure the results/ folder exists in the root directory.");
-    }
-}
-
-template <typename Scalar>
-void exportEigenvaluesToGnuplot(const EigenvalueSolver<Scalar> *solver, const std::string &matrixName)
-{
-    std::string filename = "results/" + matrixName + "_eigenvalues.dat";
-    std::ofstream file(filename);
-    if (file.is_open())
-    {
-        auto eigenvalues = solver->getEigenvalues();
-        for (int i = 0; i < eigenvalues.size(); ++i)
-        {
-            file << eigenvalues[i].real() << " " << eigenvalues[i].imag() << std::endl;
-        }
-        file.close();
-    }
-    else
-    {
-        throw IOFileSolverException("Failed to open file: " + filename,
-                                    "Make sure the results/ folder exists in the root directory.");
-    }
-}
-
-template <typename Scalar>
-void writeEigenvectorsToFile(const EigenvalueSolver<Scalar> *solver, const std::string &matrixName)
-{
-    std::string filename = "results/" + matrixName + "_vectors.txt";
-    std::ofstream file(filename);
-    if (file.is_open())
-    {
-        Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> eigenvectors;
-        try
-        {
-            eigenvectors = solver->getEigenvectors();
-        }
-        catch (const NotImplementedSolverException &e) // QR method does not compute eigenvectors, don't write to file but don't throw exception
-        {
-            std::cout << "[WARNING]: This solver does not compute eigenvectors." << std::endl;
-            return;
-        }
-
-        for (int i = 0; i < eigenvectors.rows(); ++i)
-        {
-            for (int j = 0; j < eigenvectors.cols(); ++j)
-            {
-                if constexpr (std::is_same<Scalar, std::complex<double>>::value)
-                {
-                    file << eigenvectors(i, j).real() << "+" << eigenvectors(i, j).imag() << "i";
-                }
-                else
-                {
-                    file << eigenvectors(i, j);
-                }
-                if (j < eigenvectors.cols() - 1)
-                    file << " ";
-            }
-            file << std::endl;
-        }
-        file.close();
-        std::cout << "Eigenvectors written to file: " << filename << std::endl;
-    }
-    else
-    {
-        throw IOFileSolverException("Failed to open file: " + filename,
-                                    "Make sure the results/ folder exists in the root directory.");
-    }
-}
-
-template <typename Scalar>
 void runSolver(EigenvalueSolver<Scalar> *solver, const std::string &matrixFile)
 {
     try
@@ -180,13 +98,10 @@ void runSolver(EigenvalueSolver<Scalar> *solver, const std::string &matrixFile)
 
         // gnuploting the spectrum of eigenvalues (only one eigenvalue for power method)
         exportEigenvaluesToGnuplot(solver, reader.getMatrixName());
-        std::string plotCommand = "gnuplot -e \"set terminal png size 800,600; "
-                                  "set output 'results/" +
-                                  reader.getMatrixName() + "_spectrum.png'; "
-                                                           "set style circle radius graph 0.01; "
-                                                           "plot 'results/" +
-                                  reader.getMatrixName() + "_eigenvalues.dat' using 1:2 with circles fill solid lc rgb 'black'\"";
-        system(plotCommand.c_str());
+
+        // gnuploting the convergence of the method
+        plotEigenvalues(reader.getMatrixName(), "eigenvalues");
+        plotEigenvalues(reader.getMatrixName(), "spectrum");
     }
     catch (const std::exception &e)
     {
