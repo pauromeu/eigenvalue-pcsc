@@ -26,6 +26,7 @@ public:
 /**
  * @class SolverInitializationException
  * @brief A class for exceptions thrown by the solvers during initialization.
+ *
  * This class is used when a parameter is invalid, inconsistent or missing for the correct initialization of the solver.
  *
  * @note This class inherits from SolverException.
@@ -46,6 +47,7 @@ public:
 /**
  * @class AlgebraException
  * @brief A class for exceptions thrown by the solvers during algebraic operations.
+ *
  * This class is used when an algebraic operation fails.
  *
  * @note This class inherits from SolverException.
@@ -66,6 +68,7 @@ public:
 /**
  * @class InvalidInputException
  * @brief A class for exceptions thrown by the solvers during input validation.
+ *
  * This class is used when an input is invalid. For example, if the input matrix is not square.
  *
  * @note This class inherits from SolverException.

@@ -7,6 +7,7 @@
 
 /**
  * @brief Eigenvalue solver base class
+ *
  * This class is the base class for all eigenvalue solvers.
  * It provides the interface for all eigenvalue solvers.
  * The solve() function is the main function that should be called to solve the eigenvalue problem.
