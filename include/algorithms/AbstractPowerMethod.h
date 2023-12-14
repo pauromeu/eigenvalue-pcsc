@@ -5,8 +5,7 @@
 #include <complex>
 #include <iostream>
 #include "EigenvalueSolver.h"
-#include "exceptions/CustomExceptions.h"
-
+#include "exceptions/SolverException.h"
 
 /**
  * @class AbstractPowerMethod
@@ -27,12 +26,11 @@ public:
         return eigenvalues.template cast<std::complex<double>>();
     }
 
-
     /**
      * @brief Get the eigenvectors.
      *
      * This method returns the eigenvectors of the matrix.
-    */
+     */
     Eigen::MatrixX<Scalar> getEigenvectors() const
     {
         return eigenvectors;
@@ -82,28 +80,36 @@ protected:
         return std::abs(a - b) < tolerance;
     }
 
-    bool checkEigenVector() {
-        if constexpr (std::is_same<Scalar, std::complex<double>>::value || std::is_same<Scalar, std::complex<float>>::value) {
+    bool checkEigenVector()
+    {
+        if constexpr (std::is_same<Scalar, std::complex<double>>::value || std::is_same<Scalar, std::complex<float>>::value)
+        {
             // For complex number types
             std::complex<double> firstEigenvalue = eigenvalues(0); // Use eigenvalues directly
             Eigen::VectorX<Scalar> actualVector = eigenvectors.col(0);
             Eigen::VectorX<Scalar> result1 = matrix * actualVector;
             Eigen::VectorX<Scalar> result2 = firstEigenvalue * actualVector;
 
-            for (int i = 0; i < result1.size(); ++i) {
-                if (!check_near(result1(i).real(), result2(i).real(), tolerance) || !check_near(result1(i).imag(), result2(i).imag(), tolerance)) {
+            for (int i = 0; i < result1.size(); ++i)
+            {
+                if (!check_near(result1(i).real(), result2(i).real(), tolerance) || !check_near(result1(i).imag(), result2(i).imag(), tolerance))
+                {
                     return false;
                 }
             }
-        } else {
+        }
+        else
+        {
             // For real number types
             Scalar firstEigenvalue = eigenvalues(0); // Use eigenvalues directly
             Eigen::VectorX<Scalar> actualVector = eigenvectors.col(0);
             Eigen::VectorX<Scalar> result1 = matrix * actualVector;
             Eigen::VectorX<Scalar> result2 = firstEigenvalue * actualVector;
 
-            for (int i = 0; i < result1.size(); ++i) {
-                if (!check_near(result1(i), result2(i), tolerance)) {
+            for (int i = 0; i < result1.size(); ++i)
+            {
+                if (!check_near(result1(i), result2(i), tolerance))
+                {
                     return false;
                 }
             }
@@ -111,7 +117,6 @@ protected:
 
         return true;
     }
-
 
     /**
      * @brief Check if the eigenvalue solver has converged.
@@ -130,12 +135,12 @@ protected:
             bool isEigenVector = checkEigenVector();
             if (diff > tolerance && !isEigenVector)
             {
-                std::cout<<"Algorithm did not converge"<<std::endl;
-                std::cout<<"last diff was norm of: ("<<previousVector<<" - "<<currentVector<<") = "<<diff<<std::endl;
-                std::cout<<"tolerance is: "<<tolerance<<std::endl;
-                std::cout<<"Non-convergence result:\n------------------------\n";
-                std::cout<<"Eigenvalue: "<<this->eigenvalues<<std::endl;
-                std::cout<<"Eigenvector: "<<this->eigenvectors<<std::endl;
+                std::cout << "Algorithm did not converge" << std::endl;
+                std::cout << "last diff was norm of: (" << previousVector << " - " << currentVector << ") = " << diff << std::endl;
+                std::cout << "tolerance is: " << tolerance << std::endl;
+                std::cout << "Non-convergence result:\n------------------------\n";
+                std::cout << "Eigenvalue: " << this->eigenvalues << std::endl;
+                std::cout << "Eigenvector: " << this->eigenvectors << std::endl;
                 throw IterationLimitExceeded("Iteration limit exceeded before convergence.");
             }
         }
