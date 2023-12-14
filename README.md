@@ -25,11 +25,11 @@ The project includes the following key features:
 
 | Method                        | # Eigenvalues | # Eigenvectors | Real Matrix Support | Complex Matrix Support | Example Usage                            |
 | ----------------------------- | ------------- | --------------- | ------------------- | ----------------------- | ----------------------------------------- |
-| Power Method                  | 1             | 1               | ✅                  | ✅                      | [Example](#power-method)              |
-| Inverse Power Method          | 1             | 1               | ✅                  | ✅                      | [Example](#inverse-power-method)      |
-| Shifted Power Method          | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example](#shifted-power-method)      |
-| Shifted Inverse Power Method  | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example](#shifted-inverse-power-method) |
-| QR Method                     | All      | ❌        | ✅                  | ✅                      | [Example](#qr-method)                 |
+| Power Method                  | 1             | 1               | ✅                  | ✅                      | [Example 1](#1-find-the-largest-eigenvalue-and-its-associate-eigenvector-of-a-matrix)              |
+| Inverse Power Method          | 1             | 1               | ✅                  | ✅                      | [Example 1](#1-find-the-largest-eigenvalue-and-its-associate-eigenvector-of-a-matrix)      |
+| Shifted Power Method          | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example 3](#3-shifting-to-get-other-eigenvectors)      |
+| Shifted Inverse Power Method  | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example 3](#3-shifting-to-get-other-eigenvectors) |
+| QR Method                     | All      | ❌        | ✅                  | ✅                      | [Example 2](#2-finding-all-eigenvalues-of-a-matrix)               |
 
 ### Available Options:
 
