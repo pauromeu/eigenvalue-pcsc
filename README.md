@@ -15,7 +15,7 @@ The project includes the following key features:
    - A technique for finding the smallest eigenvalue of a matrix.
 
 3. **Power and Inverse Power Methods with Shift**:
-   - An enhancement of the basic methods, incorporating a shift to accelerate convergence.
+   - An enhancement of the basic methods, incorporating a shift to accelerate convergence and find eigenvalues that are not in the extreme of the spectrum.
 
 4. **QR Method**:
    - An algorithm to compute all eigenvalues of a matrix by decomposing it into a product of an orthogonal matrix `Q` and an upper triangular matrix `R`.
@@ -104,6 +104,46 @@ build/Eigenvalue-PCSC --matrix=qc324 --solver=qr --type=complex --maxIters=1000 
 This is the result to obtain:
 
 #### 3. Shifting to get other eigenvectors
+
+Now, let's focus on a case were we want to obtain all the eigenvectors. Since we can't use QR method to obtain them. We need to get them one by one with the Shifted method (we are aware it's not ideal, but at least they can be obtained). Let's study the matrix `dum3`. This matrix is as follows:
+
+$$ dum3 = 
+\begin{bmatrix}
+0 & 11.5 & -5 \\
+-2 & 17 & -7 \\
+-4 & 2 & -10.1 \\
+\end{bmatrix}
+$$
+
+The eigenvalues and eigenvector are as follows:
+
+$$
+\begin{align*}
+\lambda_1 &\approx \text{4.4082} & \quad v_1 &\approx \begin{bmatrix} 0.3352 \\ -0.4978 \\ -0.7998 \end{bmatrix} \\
+\lambda_2 &\approx \text{1.7322} & \quad v_2 &\approx \begin{bmatrix} -0.1329 \\ -0.4274 \\ -0.8942 \end{bmatrix} \\
+\lambda_3 &\approx \text{0.7596} & \quad v_3 &\approx \begin{bmatrix} 0.3643 \\ 0.4060 \\ 0.8380 \end{bmatrix}
+\end{align*}
+$$
+
+So, let's find the 3 eigenvalues and the 3 eigenvectors. We can use **Power Method** to get the biggest one.
+
+```bash
+build/Eigenvalue-PCSC --matrix=dum3 --solver=pm
+```
+
+Similarly, we can find the smallest by using **Inverse Power Method**.
+
+```bash
+build/Eigenvalue-PCSC --matrix=dum3 --solver=pm
+```
+
+Finally, we can use any of the Shifted methods to obtain the non-exteme ones. The shift must be close to the value of target eigenvelue (closer than to any other). In this case, we know the analytical value of `λ2` so we can just use it. We could use **QR method** to get this value. We can use `shift=2.0`. So, the following command using **Inverse Power Method with Shift** (we could also use **Power Method with Shift**), will provide us with the second eigenvalue and its correspondant eigenvector.
+
+```bash
+build/Eigenvalue-PCSC --matrix=dum3 --solver=ims --shift=2.0
+```
+
+That's it! Now we have all the eigenvalues and eigenvectors of `dum3`.
 
 
 
