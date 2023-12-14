@@ -42,6 +42,73 @@ The project includes the following key features:
 | `--shift`     | Shift value for Shifted Methods.                | For Shifted Methods         | `0.0`           | `--shift=1.0`                           |
 | `--maxIters`      | Number of maximum iterations            | No         | 10000               | `--maxIters=1000`                               |
 
+### Program Workflow
+
+1. **Input Data**:
+   - Place the matrix for which you want to compute eigenvalues and eigenvectors inside the folder `data/matrix/`.
+   - Currently, the program supports matrices in the `.mtx` format.
+
+2. **Running the Solver**:
+   - The solver is executed through the command line interface.
+   - You need to specify both the matrix and the solver you want to use.
+   - Refer to the examples section below for detailed usage instructions.
+
+3. **Output Results**:
+   - The results are stored in the `results/` folder.
+   - For each input matrix named `mat`, three main result files are provided:
+     - `mat_eigenvalues.txt`: Contains the eigenvalue(s) of the matrix `mat`.
+     - `mat_eigenvectors.txt`: Contains the eigenvector(s) of the matrix `mat`.
+     - `mat_spectrum.png`: Presents a plot of the spectrum of the eigenvalue(s) of the matrix `mat`.
+
+
+### Examples
+
+In this section, some examples of usage are provided. All the examples use demo matrices that can be find inside the folder `data/matrix/`.
+
+#### 1. Find the largest eigenvalue and its associate eigenvector of a matrix.
+
+To find the dominant eigenvalue (the one with the maximum absolute value) we would use **Power Method**. So, this is the comman we would run from the root folder:
+
+```bash
+build/Eigenvalue-PCSC --matrix=can_24 --solver=pm
+```
+
+This is the simplest command we can write. We are specifying the only 2 compulsory commands: the matrix and the solver. After running this, the expected output are the files with the larger eigenvalue and its correspondant eigenvalue.
+
+#### 2. Find all the eigenvalues of a matrix
+
+The only method of our solver that permits to obtain all the eigenvalues at once is the **QR method**. In this section we present an example on how to use it for both real and complex matrices. However, this method won't provide the eigenvectors.
+
+##### 2.1 Real matrix
+
+Continuing with the same matrix. This is how we would find all eigenvectors.
+
+```bash
+build/Eigenvalue-PCSC --matrix=can_24 --solver=qr --maxIters=1000 --tol=1e-5
+```
+
+Note that in this case we added two optional arguments. We would get something like follows as a solution:
+
+
+
+##### 2.2 Complex matrix
+
+For the complex case, we have to use an input complex matrix. Let's take `qc324` as example. 
+
+**Important**: The solver type must be fixed to `complex` or an error will be raised.
+
+```bash
+build/Eigenvalue-PCSC --matrix=qc324 --solver=qr --type=complex --maxIters=1000 --tol=1e-5
+```
+
+This is the result to obtain:
+
+#### 3. Shifting to get other eigenvectors
+
+
+
+
+
 
 
 ## Cloning the repository
