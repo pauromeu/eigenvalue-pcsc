@@ -1,3 +1,6 @@
+#ifndef MATRIX_READER_MTX_H
+#define MATRIX_READER_MTX_H
+
 #include <Eigen/Sparse>
 #include <Eigen/Dense>
 
@@ -163,3 +166,5 @@ void MatrixReaderMTX<double>::addRealEntry(int row, int col, double real)
 
 template <>
 void MatrixReaderMTX<std::complex<double>>::addRealEntry(int row, int col, double real) {}
+
+#endif // MATRIX_READER_MTX_H

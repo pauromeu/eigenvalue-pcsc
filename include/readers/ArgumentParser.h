@@ -1,3 +1,6 @@
+#ifndef ARGUMENTPARSER_H
+#define ARGUMENTPARSER_H
+
 #include <string>
 #include <map>
 
@@ -42,3 +45,5 @@ public:
 private:
     std::map<std::string, std::string> args;
 };
+
+#endif // ARGUMENTPARSER_H

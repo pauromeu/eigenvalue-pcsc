@@ -1,3 +1,6 @@
+#ifndef SOLVER_EXCEPTION_H
+#define SOLVER_EXCEPTION_H
+
 #include <stdexcept>
 #include <string>
 
@@ -136,3 +139,5 @@ public:
     explicit IOFileSolverException(const std::string &message, const std::string &tip = "")
         : SolverException("File IO Error: " + message, tip) {}
 };
+
+#endif // SOLVER_EXCEPTION_H
