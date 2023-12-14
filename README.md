@@ -38,9 +38,9 @@ The project includes the following key features:
 | `--solver`    | Eigenvalue solver method to use.               | Yes        | -               | `--solver=pm`                        |
 | `--matrix`     | Name of the matrix file inside `data/matrix` in `mtx` format.         | Yes        | -               | `--matrix=can_24`              |
 | `--type`    | Type of solver used. Only two valid types: `real` and `complex`.      | No         | `real`   | `--type=complex`            |
-| `--tolerance`    | Tolerance of the solver for convergence check. | No         | `1e-6`           | `--tolerance=1e-8`                           |
+| `--tol`    | Tolerance of the solver for convergence check. | No         | `1e-6`           | `--tol=1e-8`                           |
 | `--shift`     | Shift value for Shifted Methods.                | For Shifted Methods         | `0.0`           | `--shift=1.0`                           |
-| `--maxIters`      | Number of maximum iterations            | No         | 10000               | `--maxIters=1000`                               |
+| `--maxIter`      | Number of maximum iterations            | No         | 10000               | `--maxIter=1000`                               |
 
 ### Program Workflow
 
@@ -84,7 +84,7 @@ The only method in our solver that allows you to obtain all eigenvalues at once 
 Continuing with the same matrix. This way we would find all the eigenvectors.
 
 ```bash
-build/Eigenvalue-PCSC --matrix=can_24 --solver=qr --maxIters=1000 --tol=1e-5
+build/Eigenvalue-PCSC --matrix=can_24 --solver=qr --maxIter=1000 --tol=1e-5
 ```
 
 Note that in this case we added two optional arguments. We will get the plots of the eigenvalues in the complex plane and their spectrum.
@@ -114,7 +114,7 @@ For the complex case, we have to use an input complex matrix. Let's take `qc324`
 **Important**: The solver type must be fixed to `complex` or an error will be raised.
 
 ```bash
-build/Eigenvalue-PCSC --matrix=qc324 --solver=qr --type=complex --maxIters=1000 --tol=1e-5
+build/Eigenvalue-PCSC --matrix=qc324 --solver=qr --type=complex --maxIter=1000 --tol=1e-5
 ```
 
 This is the result to obtain:
