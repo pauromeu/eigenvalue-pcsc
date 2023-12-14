@@ -8,6 +8,18 @@
 #include <cmath>
 #include <exceptions/SolverException.h>
 
+/**
+ * @brief A class for solving the eigenvalue problem using the QR method.
+ *
+ * The QR method is an iterative method for computing the eigenvalues of a matrix. It is based on the QR decomposition of the matrix.
+ * By repeatedly computing the QR decomposition of the matrix, the matrix converges to a triangular matrix with the eigenvalues on the diagonal.
+ *
+ * In order to support complex eigenvalues, the QR method uses a 2x2 block of the matrix to compute the eigenvalues using the quadratic formula. In this case, the matrix is not triangular.
+ *
+ * The QR method does not support computing the eigenvectors.
+ *
+ * @tparam Scalar The scalar type of the matrix. It can be either double or std::complex<double>.
+ */
 template <typename Scalar>
 class QRMethod : public EigenvalueSolver<Scalar>
 {
