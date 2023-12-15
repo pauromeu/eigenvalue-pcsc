@@ -255,6 +255,7 @@ To test the algorithm, the following tests have been implemented:
 ##### Matrix Setup:
 
 The input matrix is set as:
+
 $$ input matrix = 
 \begin{bmatrix}
 2 & 1  \\
@@ -277,6 +278,7 @@ We also set `shift = -5.0` when testing the shifted power method.
 ##### Matrix Setup:
 
 The input matrix is set as:
+
 $$ input matrix =
 \begin{bmatrix}
 5 & 2  \\
@@ -289,12 +291,62 @@ We also set `shift = -5.0` when testing the shifted power method.
 
 ##### Test suites
 - Test 1: We assert that the output eigenvalue is near to `(11 - sqrt(17)) / 2` with a tolerance of `1e-6`.
-- Test 2: We assert that the cosine similarity between the output eigenvector and the expected eigenvector (\(\left(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}\right)\)) is near to 1.0 with a tolerance of 1e-6.
+- Test 2: We assert that the cosine similarity between the output eigenvector and the expected eigenvector \(\left(\frac{-1 - \sqrt{17}}{4}, 1\right)\) is near to 1.0 with a tolerance of 1e-6.
 - Test 3: We set `maxIteration=1` and assert that the `IterationLimitExceeded` exception is thrown.
 - Test 4: We set an empty matrix as input and assert that the `InvalidInputException` exception is thrown.
 
 
-#### _QR Method_
+#### Power Method (With Shift) (complex matrix)
+
+##### Matrix Setup:
+
+The input matrix is set as:
+
+$$ input matrix =
+\begin{bmatrix}
+3 & 3-2i  \\
+3+2i& 2  \\
+\end{bmatrix}
+$$
+We set `tolerance = 1e-6f` and `maxIter = 1000`.
+
+We also set `shift = -5.0` when testing the shifted power method.
+
+##### Test suites
+- Test 1: We assert that the real part of output eigenvalue is near to `0.162865` with a tolerance of `1e-5`.
+- Test 2: We assert that \(A\mathbf{x} = \lambda\mathbf{x}\) both in real part and in imaginary part, where \(\mathbf{x}\) is the output eigenvector and \(\lambda\) is the output eigenvalue.
+
+
+#### Inverse Power Method (With Shift) (complex matrix)
+
+$$ input matrix =
+\begin{bmatrix}
+-2/7 & 3/7-2/7i  \\
+3/7+2/7i & -3/7  \\
+\end{bmatrix}
+$$
+
+We set `tolerance = 1e-6f` and `maxIter = 1000`.
+
+We also set `shift = -5.0` when testing the shifted power method.
+
+##### Test suites
+- Test 1: We assert that the real part of output eigenvalue is near to `3.0` with a tolerance of `1e-6`.
+- Test 2: We assert that \(A\mathbf{x} = \lambda\mathbf{x}\) both in real part and in imaginary part, where \(\mathbf{x}\) is the output eigenvector and \(\lambda\) is the output eigenvalue.
+
+
+#### QR Method
+
+$$ input matrix =
+\begin{bmatrix}
+2& 1  \\
+1 & 2  \\
+\end{bmatrix}
+$$
+We set `tolerance = 1e-6f` and `maxIter = 1000`.
+
+#### Test suites
+- Test 1: We assert that the first output eigenvalue is near to `3.0` with a tolerance of `1e-6`.
 
 
 ## Generating Documentation
