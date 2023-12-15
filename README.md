@@ -73,7 +73,14 @@ To find the dominant eigenvalue (the one with the maximum absolute value) we wou
 build/Eigenvalue-PCSC --matrix=can_24 --solver=pm
 ```
 
-This is the simplest command we can write. We are specifying the only 2 compulsory commands: the matrix and the solver. After running this, the expected output are the files with the larger eigenvalue and its correspondant eigenvalue. 
+This is the simplest command we can write. We are specifying the only 2 compulsory commands: the matrix and the solver. After running this, the expected output are the files with the larger eigenvalue and its correspondant eigenvalue.
+
+Similarly, we can find the smallest eigenvalue (in absolute value) and its associated vector. In this casae, we have to use **Inverser Power Method**.
+
+```bash
+build/Eigenvalue-PCSC --matrix=can_24 --solver=im
+```
+
 
 Once generated, you should be able to find them in the [results](results/) folder.
 
