@@ -256,7 +256,7 @@ To test the algorithm, the following tests have been implemented:
 
 The input matrix is set as:
 
-$$ input matrix = 
+$$ inputMatrix = 
 \begin{bmatrix}
 2 & 1  \\
 1& 2  \\
@@ -279,7 +279,7 @@ We also set `shift = -5.0` when testing the shifted power method.
 
 The input matrix is set as:
 
-$$ input_matrix =
+$$ inputMatrix =
 \begin{bmatrix}
 5 & 2  \\
 2& 6  \\
@@ -303,7 +303,7 @@ We also set `shift = -5.0` when testing the shifted power method.
 
 The input matrix is set as:
 
-$$ input matrix =
+$$ inputMatrix =
 \begin{bmatrix}
 3 & 3-2i  \\
 3+2i& 2  \\
@@ -316,12 +316,12 @@ We also set `shift = -5.0` when testing the shifted power method.
 
 ##### Test suites
 - Test 1: We assert that the real part of output eigenvalue is near to `0.162865` with a tolerance of `1e-5`.
-- Test 2: We assert that \(A\mathbf{x} = \lambda\mathbf{x}\) both in real part and in imaginary part, where \(\mathbf{x}\) is the output eigenvector and \(\lambda\) is the output eigenvalue.
+- Test 2: We assert that $$A\mathbf{x} = \lambda\mathbf{x}$$ both in real part and in imaginary part, where \(\mathbf{x}\) is the output eigenvector and \(\lambda\) is the output eigenvalue.
 
 
 #### Inverse Power Method (With Shift) (complex matrix)
 
-$$ input matrix =
+$$ inputMatrix =
 \begin{bmatrix}
 -2/7 & 3/7-2i/7  \\
 3/7+2i/7 & -3/7  \\
