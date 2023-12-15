@@ -279,12 +279,13 @@ We also set `shift = -5.0` when testing the shifted power method.
 
 The input matrix is set as:
 
-$$ input matrix =
+$$ input_matrix =
 \begin{bmatrix}
 5 & 2  \\
 2& 6  \\
 \end{bmatrix}
 $$
+
 We set `tolerance = 1e-6` and `maxIter = 1000`.
 
 We also set `shift = -5.0` when testing the shifted power method.
@@ -308,6 +309,7 @@ $$ input matrix =
 3+2i& 2  \\
 \end{bmatrix}
 $$
+
 We set `tolerance = 1e-6f` and `maxIter = 1000`.
 
 We also set `shift = -5.0` when testing the shifted power method.
@@ -321,8 +323,8 @@ We also set `shift = -5.0` when testing the shifted power method.
 
 $$ input matrix =
 \begin{bmatrix}
--2/7 & 3/7-2/7i  \\
-3/7+2/7i & -3/7  \\
+-2/7 & 3/7-2i/7  \\
+3/7+2i/7 & -3/7  \\
 \end{bmatrix}
 $$
 
@@ -343,6 +345,7 @@ $$ input matrix =
 1 & 2  \\
 \end{bmatrix}
 $$
+
 We set `tolerance = 1e-6f` and `maxIter = 1000`.
 
 #### Test suites
