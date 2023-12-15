@@ -20,6 +20,12 @@ The project includes the implementation of the follower solvers in order to solv
 4. **QR Method**:
    - An algorithm to compute all eigenvalues of a matrix by decomposing it into a product of an orthogonal matrix `Q` and an upper triangular matrix `R`.
 
+## Class hierarchy
+The code follows the following class hierarchy:
+
+![classes](/figures/classes.png)
+
+
 ## Cloning the repository
 
 When cloning the repository to a new location, you should initialize and fetch the submodules:
