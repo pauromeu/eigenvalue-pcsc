@@ -23,7 +23,7 @@ The project includes the implementation of the follower solvers in order to solv
 ## Class hierarchy
 The code follows the following class hierarchy:
 
-![classes](/figures/classes.png)
+![classes](/figures/class.png)
 
 
 ## Cloning the repository
