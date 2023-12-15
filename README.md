@@ -269,7 +269,7 @@ We also set `shift = -5.0` when testing the shifted power method.
 
 ##### Test suites
 - Test 1: We assert that the output eigenvalue is near to `3.0` with a tolerance of `1e-6`.
-- Test 2: We assert that the cosine similarity between the output eigenvector and the expected eigenvector (\(\left(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}\right)\)) is near to `1.0` with a tolerance of `1e-6`.
+- Test 2: We assert that the cosine similarity between the output eigenvector and the expected eigenvector $$\left(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}\right)$$ is near to `1.0` with a tolerance of `1e-6`.
 - Test 3: We set `maxIteration=1` and assert that the `IterationLimitExceeded` exception is thrown.
 - Test 4: We set an empty matrix as input and assert that the `InvalidInputException` exception is thrown.
 
@@ -292,7 +292,7 @@ We also set `shift = -5.0` when testing the shifted power method.
 
 ##### Test suites
 - Test 1: We assert that the output eigenvalue is near to `(11 - sqrt(17)) / 2` with a tolerance of `1e-6`.
-- Test 2: We assert that the cosine similarity between the output eigenvector and the expected eigenvector \(\left(\frac{-1 - \sqrt{17}}{4}, 1\right)\) is near to 1.0 with a tolerance of 1e-6.
+- Test 2: We assert that the cosine similarity between the output eigenvector and the expected eigenvector $$\left(\frac{-1 - \sqrt{17}}{4}, 1\right)$$ is near to 1.0 with a tolerance of 1e-6.
 - Test 3: We set `maxIteration=1` and assert that the `IterationLimitExceeded` exception is thrown.
 - Test 4: We set an empty matrix as input and assert that the `InvalidInputException` exception is thrown.
 
@@ -316,7 +316,7 @@ We also set `shift = -5.0` when testing the shifted power method.
 
 ##### Test suites
 - Test 1: We assert that the real part of output eigenvalue is near to `0.162865` with a tolerance of `1e-5`.
-- Test 2: We assert that $$A\mathbf{x} = \lambda\mathbf{x}$$ both in real part and in imaginary part, where \(\mathbf{x}\) is the output eigenvector and \(\lambda\) is the output eigenvalue.
+- Test 2: We assert that $$A\mathbf{x} = \lambda\mathbf{x}$$ both in real part and in imaginary part, where $$\mathbf{x}$$ is the output eigenvector and $$\lambda$$ is the output eigenvalue.
 
 
 #### Inverse Power Method (With Shift) (complex matrix)
@@ -334,7 +334,7 @@ We also set `shift = -5.0` when testing the shifted power method.
 
 ##### Test suites
 - Test 1: We assert that the real part of output eigenvalue is near to `3.0` with a tolerance of `1e-6`.
-- Test 2: We assert that \(A\mathbf{x} = \lambda\mathbf{x}\) both in real part and in imaginary part, where \(\mathbf{x}\) is the output eigenvector and \(\lambda\) is the output eigenvalue.
+- Test 2: We assert that $$A\mathbf{x} = \lambda\mathbf{x}$$ both in real part and in imaginary part, where $$\mathbf{x}$$ is the output eigenvector and $$\lambda$$ is the output eigenvalue.
 
 
 #### QR Method
