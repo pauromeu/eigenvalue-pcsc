@@ -55,10 +55,11 @@ The project includes the following key features:
 
 3. **Output Results**:
    - The results are stored in the `results/` folder.
-   - For each input matrix named `mat`, three main result files are provided:
+   - For each input matrix named `mat`, four main result files are provided:
      - `mat_eigenvalues.txt`: Contains the eigenvalue(s) of the matrix `mat`.
      - `mat_eigenvectors.txt`: Contains the eigenvector(s) of the matrix `mat`.
      - `mat_spectrum.png`: Presents a plot of the spectrum of the eigenvalue(s) of the matrix `mat`.
+     - `mat_eigenvalues.png`: Presenta a plot of the eigenvalue(s) of `mat` in the complex plane.
 
 
 ### Examples
