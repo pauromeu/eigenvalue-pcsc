@@ -162,13 +162,13 @@ Note that in this case we added two optional arguments. We will get the plots of
 <table>
   <tr>
     <td>
-      <img src="results/can_24_eigenvalues.png" alt="Image 1" style="width: 100%;" />
+      <img src="figures/can_24_eigenvalues.png" alt="Image 1" style="width: 100%;" />
       <p align="center">
         <sup>Figure 1. Complex plane</sup>
       </p>
     </td>
     <td>
-      <img src="results/can_24_spectrum.png" alt="Image 2" style="width: 100%;" />
+      <img src="figures/can_24_spectrum.png" alt="Image 2" style="width: 100%;" />
       <p align="center">
         <sup>Figure 2. Spectrum</sup>
       </p>
@@ -193,13 +193,13 @@ This is the result to obtain:
 <table>
   <tr>
     <td>
-      <img src="results/rand_complex_eigenvalues.png" alt="Image 1" style="width: 100%;" />
+      <img src="figures/rand_complex_eigenvalues.png" alt="Image 1" style="width: 100%;" />
       <p align="center">
         <sup>Figure 3. Complex plane</sup>
       </p>
     </td>
     <td>
-      <img src="results/rand_complex_spectrum.png" alt="Image 2" style="width: 100%;" />
+      <img src="figures/rand_complex_spectrum.png" alt="Image 2" style="width: 100%;" />
       <p align="center">
         <sup>Figure 4. Spectrum</sup>
       </p>
