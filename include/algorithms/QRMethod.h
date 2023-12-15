@@ -53,6 +53,12 @@ public:
      */
     void setMatrix(const Eigen::MatrixX<Scalar> &matrix)
     {
+        // Assert that the matrix is square
+        if (matrix.rows() != matrix.cols())
+        {
+            throw InvalidInputException("The matrix must be square.", "Make sure the matrix is square.");
+        }
+
         this->matrix = matrix;
     }
 
@@ -87,8 +93,25 @@ protected:
      *
      * @note This function does nothing for the QR method.
      */
-    void initialize()
+    void initialize() override
     {
+        previousLowerDiagonal = getLowerDiagonal();
+    }
+
+    /**
+     * @brief Get lower diagonal of the matrix.
+     *
+     * @return The lower diagonal of the matrix.
+     */
+    Eigen::MatrixX<Scalar> getLowerDiagonal()
+    {
+        int n = matrix.rows();
+        Eigen::MatrixX<Scalar> lowerDiagonal(n - 1, 1);
+        for (int i = 0; i < n - 1; i++)
+        {
+            lowerDiagonal(i, 0) = matrix(i + 1, i);
+        }
+        return lowerDiagonal;
     }
 
     /**
@@ -98,14 +121,24 @@ protected:
      *
      * @return True if the solver has converged, false otherwise.
      */
-    bool hasConverged()
+    bool hasConverged() override
 
     {
         if (this->currentIteration >= maxIterations)
         {
-            // std::cout << "Warning: QR method did not converge after " << maxIterations << " iterations." << std::endl;
+            std::cout << "[WARNING]: The maximum number of iterations has been exceeded." << std::endl;
+            std::cout << "[WARNING]: The results may still be valid since the convergence criteria is not very robust." << std::endl;
+            std::cout << "[WARNING]: Consider increasing the maximum number of iterations or decreasing the tolerance." << std::endl;
             return true;
         }
+        // Check if the lower diagonal has converged
+        Eigen::MatrixX<Scalar> lowerDiagonal = getLowerDiagonal();
+        if ((lowerDiagonal - previousLowerDiagonal).norm() <= std::abs(this->tolerance))
+        {
+            return true;
+        }
+        previousLowerDiagonal = lowerDiagonal;
+
         return false;
     }
 
@@ -117,7 +150,7 @@ protected:
      * Then, the matrix is updated to be the product of the R and Q matrices.
      * This process is supposed to converge to a triangular matrix with the eigenvalues on the diagonal.
      */
-    void performIteration()
+    void performIteration() override
     {
         Eigen::HouseholderQR<Eigen::MatrixX<Scalar>> qr = matrix.householderQr();
         Eigen::MatrixX<Scalar> Q = qr.householderQ();
@@ -133,7 +166,7 @@ protected:
      * Then, it sorts the eigenvalues in descending order of their absolute values.
      * Finally, it assigns the eigenvalues to the class member.
      */
-    void obtainResults()
+    void obtainResults() override
     {
         {
             int i = 0;
@@ -210,6 +243,9 @@ protected:
     }
 
 private:
+    // Vector to track the values of the lower diagonal of matrix (dimension n - 1)
+    Eigen::MatrixX<Scalar> previousLowerDiagonal;
+
     Eigen::MatrixX<Scalar> matrix;
     int maxIterations;
     Scalar tolerance;
