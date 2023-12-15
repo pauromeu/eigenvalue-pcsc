@@ -92,10 +92,10 @@ The only method in our solver that allows you to obtain all eigenvalues at once 
 
 ##### 2.1 Real matrix
 
-Now let's focus on `rand_int` matrix. This is a 20 x 20 matrix that has been generated with random integers. Let's find its eigenvalues:
+We can continue with `can_24` matrix. Let's find all its eigenvalues at once:
 
 ```bash
-build/Eigenvalue-PCSC --matrix=rand_int --solver=qr --maxIter=10000 --tol=1e-5
+build/Eigenvalue-PCSC --matrix=rand_int --solver=can_24 --maxIter=10000 --tol=1e-5
 ```
 
 Note that in this case we added two optional arguments. We will get the plots of the eigenvalues in the complex plane and their spectrum.
@@ -103,13 +103,13 @@ Note that in this case we added two optional arguments. We will get the plots of
 <table>
   <tr>
     <td>
-      <img src="results/rand_int_eigenvalues.png" alt="Image 1" style="width: 100%;" />
+      <img src="results/can_24_eigenvalues.png" alt="Image 1" style="width: 100%;" />
       <p align="center">
         <sup>Figure 1. Complex plane</sup>
       </p>
     </td>
     <td>
-      <img src="results/rand_int_spectrum.png" alt="Image 2" style="width: 100%;" />
+      <img src="results/can_24_spectrum.png" alt="Image 2" style="width: 100%;" />
       <p align="center">
         <sup>Figure 2. Spectrum</sup>
       </p>
