@@ -170,7 +170,7 @@ $$
 \end{align*}
 $$
 
-So, let's find the three eigenvalues and the corresponding eigenvectors. We can use the **Power Metho**d** to obtain the largest one.
+So, let's find the three eigenvalues and the corresponding eigenvectors. We can use the **Power Method** to obtain the largest one.
 
 ```bash
 build/Eigenvalue-PCSC --matrix=dum3 --solver=pm
