@@ -190,6 +190,53 @@ build/Eigenvalue-PCSC --matrix=dum3 --solver=ims --shift=2.0
 
 That's it! Now we have all the eigenvalues and eigenvectors of `dum3`.
 
+### Tests
+To test the algorithm, the following tests have been implemented:
+#### Power Method (With Shift) (real matrix)
+##### Matrix Setup:
+
+The input matrix is set as:
+$$ input matrix = 
+\begin{bmatrix}
+2 & 1  \\
+1& 2  \\
+\end{bmatrix}
+$$
+
+We set `tolerance = 1e-6` and `maxIter = 1000`.
+
+We also set `shift = -5.0` when testing the shifted power method.
+
+##### Test suites
+- Test 1: We assert that the output eigenvalue is near to `3.0` with a tolerance of `1e-6`.
+- Test 2: We assert that the cosine similarity between the output eigenvector and the expected eigenvector (\(\left(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}\right)\)) is near to `1.0` with a tolerance of `1e-6`.
+- Test 3: We set `maxIteration=1` and assert that the `IterationLimitExceeded` exception is thrown.
+- Test 4: We set an empty matrix as input and assert that the `InvalidInputException` exception is thrown.
+
+#### Inverse Power Method (With Shift) (real matrix)
+
+##### Matrix Setup:
+
+The input matrix is set as:
+$$ input matrix =
+\begin{bmatrix}
+5 & 2  \\
+2& 6  \\
+\end{bmatrix}
+$$
+We set `tolerance = 1e-6` and `maxIter = 1000`.
+
+We also set `shift = -5.0` when testing the shifted power method.
+
+##### Test suites
+- Test 1: We assert that the output eigenvalue is near to `(11 - sqrt(17)) / 2` with a tolerance of `1e-6`.
+- Test 2: We assert that the cosine similarity between the output eigenvector and the expected eigenvector (\(\left(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}\right)\)) is near to 1.0 with a tolerance of 1e-6.
+- Test 3: We set `maxIteration=1` and assert that the `IterationLimitExceeded` exception is thrown.
+- Test 4: We set an empty matrix as input and assert that the `InvalidInputException` exception is thrown.
+
+
+#### _QR Method_
+
 
 ## Cloning the repository
 
