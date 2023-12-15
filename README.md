@@ -95,7 +95,7 @@ The only method in our solver that allows you to obtain all eigenvalues at once 
 Now let's focus on `rand_int` matrix. This is a 20 x 20 matrix that has been generated with random integers. Let's find its eigenvalues:
 
 ```bash
-build/Eigenvalue-PCSC --matrix=rand_int --solver=qr --maxIter=1000 --tol=1e-5
+build/Eigenvalue-PCSC --matrix=rand_int --solver=qr --maxIter=10000 --tol=1e-5
 ```
 
 Note that in this case we added two optional arguments. We will get the plots of the eigenvalues in the complex plane and their spectrum.
@@ -126,7 +126,7 @@ For the complex case, we have to use an input complex matrix. Let's take `rand_c
 **Important**: The solver type must be fixed to `complex` or an error will be raised.
 
 ```bash
-build/Eigenvalue-PCSC --matrix=rand_complex --solver=qr --type=complex --maxIter=1000 --tol=1e-5
+build/Eigenvalue-PCSC --matrix=rand_complex --solver=qr --type=complex --maxIter=10000 --tol=1e-5
 ```
 
 This is the result to obtain:
