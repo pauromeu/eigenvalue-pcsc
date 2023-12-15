@@ -154,7 +154,7 @@ The only method in our solver that allows you to obtain all eigenvalues at once 
 We can continue with `can_24` matrix. Let's find all its eigenvalues at once:
 
 ```bash
-build/Eigenvalue-PCSC --matrix=rand_int --solver=can_24 --maxIter=10000 --tol=1e-5
+build/Eigenvalue-PCSC --matrix=can_24 --solver=qr --maxIter=10000 --tol=1e-5
 ```
 
 Note that in this case we added two optional arguments. We will get the plots of the eigenvalues in the complex plane and their spectrum.
