@@ -1,12 +1,12 @@
 # Eigenvalue Computation Project
 
-## Introduction
+This repo contains the main project of the EPFL course Programming Concepts for Scientific Computing MATH-458.
+
 This project is dedicated to the implementation of numerical methods for eigenvalue computation. It targets matrices `A` and focuses on finding all scalars `λ` (eigenvalues) that satisfy the equation:
 
 $$ Ax = \lambda x $$
 
-## Features
-The project includes the following key features:
+The project includes the implementation of the follower solvers in order to solve the problem:
 
 1. **Power Method**: 
    - This method is used to find the dominant eigenvalue of a matrix.
@@ -20,8 +20,61 @@ The project includes the following key features:
 4. **QR Method**:
    - An algorithm to compute all eigenvalues of a matrix by decomposing it into a product of an orthogonal matrix `Q` and an upper triangular matrix `R`.
 
+## Cloning the repository
 
-### Method Capabilities
+When cloning the repository to a new location, you should initialize and fetch the submodules:
+
+```bash
+git clone --recursive https://github.com/pauromeu/eigenvalue-pcsc.git
+```
+
+Or, if the repository is already cloned:
+
+```bash
+git submodule update --init --recursive
+```
+
+## Building the Project
+
+### Prerequisites
+Before building, ensure you have the following installed:
+1. CMake (version 3.10 or higher)
+2. A C++ compiler compatible with CMake (GCC, Clang, MSVC, etc.)
+3. Gnuplot (version 3.2 or higher)
+
+This project also makes use of depencies included as submodules. No need to manually install them.
+
+1. Eigen: A C++ template library for linear algebra.
+2. Google Test: A C++ testing framework for unit testing.
+
+### Building Instructions
+
+   Run the following command in the root directory of the project to create a build directory and generate the necessary build files:
+   ```bash
+   cmake -S . -B build
+   ```
+   Build the files in the build folder:
+   ```bash
+   cmake --build build
+   ```
+
+### Running the project
+
+   After a successful build, you can find the executable in the build directory. Navigate there and run it. Learn ho to use it in the 
+   
+   ```bash
+   cd build
+    ./Eigenvalue-PCSC --matrix=<matrix> --solver=<solver>
+   ```
+
+   In the same directory, run the executable generated to run the tets:
+   ```bash
+    ./Eigenvalue-PCSC-tests
+   ```
+
+## How to use the program?
+
+As explained in the [introduction](#eigenvalue-computation-project), the project implements 5 methods to obtain the eigenvalues and the eigenvectors of a matrix. The following summary table can guid the user to know which method to use depending on its requirements.
 
 | Method                        | # Eigenvalues | # Eigenvectors | Real Matrix Support | Complex Matrix Support | Example Usage                            |
 | ----------------------------- | ------------- | --------------- | ------------------- | ----------------------- | ----------------------------------------- |
@@ -31,17 +84,6 @@ The project includes the following key features:
 | Shifted Inverse Power Method  | Multiple*      | Multiple*        | ✅                  | ✅                      | [Example 3](#3-shifting-to-get-other-eigenvectors) |
 | QR Method                     | All      | ❌        | ✅                  | ✅                      | [Example 2](#2-finding-all-eigenvalues-of-a-matrix)               |
 
-### Available Options:
-
-| Flag              | Description                                                   | Compulsory | Default Value   | Example Usage                     |
-| ----------------- | ------------------------------------------------------------- | ---------- | --------------- | ---------------------------------- |
-| `--solver`    | Eigenvalue solver method to use.               | Yes        | -               | `--solver=pm`                        |
-| `--matrix`     | Name of the matrix file inside `data/matrix` in `mtx` format.         | Yes        | -               | `--matrix=can_24`              |
-| `--type`    | Type of solver used. Only two valid types: `real` and `complex`.      | No         | `real`   | `--type=complex`            |
-| `--tol`    | Tolerance of the solver for convergence check. | No         | `1e-6`           | `--tol=1e-8`                           |
-| `--shift`     | Shift value for Shifted Methods.                | For Shifted Methods         | `0.0`           | `--shift=1.0`                           |
-| `--maxIter`      | Number of maximum iterations            | No         | 10000               | `--maxIter=1000`                               |
-
 ### Program Workflow
 
 1. **Input Data**:
@@ -50,7 +92,10 @@ The project includes the following key features:
 
 2. **Running the Solver**:
    - The solver is executed through the command line interface.
-   - You need to specify both the matrix and the solver you want to use.
+   - You need to specify both the `matrix` and the `solver` you want to use.
+   ```bash 
+    build/Eigenvalue-PCSC --matrix=<matrix> --solver=<solver>
+   ```
    - Refer to the examples section below for detailed usage instructions.
 
 3. **Output Results**:
@@ -60,6 +105,20 @@ The project includes the following key features:
      - `mat_eigenvectors.txt`: Contains the eigenvector(s) of the matrix `mat`.
      - `mat_spectrum.png`: Presents a plot of the spectrum of the eigenvalue(s) of the matrix `mat`.
      - `mat_eigenvalues.png`: Presenta a plot of the eigenvalue(s) of `mat` in the complex plane.
+
+
+### Solver paramaters options
+
+The following table summarizes the arguments tha can be used for the solver.
+
+| Flag              | Description                                                   | Compulsory | Default Value   | Example Usage                     |
+| ----------------- | ------------------------------------------------------------- | ---------- | --------------- | ---------------------------------- |
+| `--solver`    | Eigenvalue solver method to use.               | Yes        | -               | `--solver=pm`                        |
+| `--matrix`     | Name of the matrix file inside `data/matrix` in `mtx` format.         | Yes        | -               | `--matrix=can_24`              |
+| `--type`    | Type of solver used. Only two valid types: `real` and `complex`.      | No         | `real`   | `--type=complex`            |
+| `--tol`    | Tolerance of the solver for convergence check. | No         | `1e-6`           | `--tol=1e-8`                           |
+| `--shift`     | Shift value for Shifted Methods.                | For Shifted Methods         | `0.0`           | `--shift=1.0`                           |
+| `--maxIter`      | Number of maximum iterations            | No         | 10000               | `--maxIter=1000`                               |
 
 
 ### Examples
@@ -92,10 +151,10 @@ The only method in our solver that allows you to obtain all eigenvalues at once 
 
 ##### 2.1 Real matrix
 
-Now let's focus on `rand_int` matrix. This is a 20 x 20 matrix that has been generated with random integers. Let's find its eigenvalues:
+We can continue with `can_24` matrix. Let's find all its eigenvalues at once:
 
 ```bash
-build/Eigenvalue-PCSC --matrix=rand_int --solver=qr --maxIter=1000 --tol=1e-5
+build/Eigenvalue-PCSC --matrix=can_24 --solver=qr --maxIter=10000 --tol=1e-5
 ```
 
 Note that in this case we added two optional arguments. We will get the plots of the eigenvalues in the complex plane and their spectrum.
@@ -103,13 +162,13 @@ Note that in this case we added two optional arguments. We will get the plots of
 <table>
   <tr>
     <td>
-      <img src="results/rand_int_eigenvalues.png" alt="Image 1" style="width: 100%;" />
+      <img src="results/can_24_eigenvalues.png" alt="Image 1" style="width: 100%;" />
       <p align="center">
         <sup>Figure 1. Complex plane</sup>
       </p>
     </td>
     <td>
-      <img src="results/rand_int_spectrum.png" alt="Image 2" style="width: 100%;" />
+      <img src="results/can_24_spectrum.png" alt="Image 2" style="width: 100%;" />
       <p align="center">
         <sup>Figure 2. Spectrum</sup>
       </p>
@@ -126,7 +185,7 @@ For the complex case, we have to use an input complex matrix. Let's take `rand_c
 **Important**: The solver type must be fixed to `complex` or an error will be raised.
 
 ```bash
-build/Eigenvalue-PCSC --matrix=rand_complex --solver=qr --type=complex --maxIter=1000 --tol=1e-5
+build/Eigenvalue-PCSC --matrix=rand_complex --solver=qr --type=complex --maxIter=10000 --tol=1e-5
 ```
 
 This is the result to obtain:
@@ -238,58 +297,6 @@ We also set `shift = -5.0` when testing the shifted power method.
 #### _QR Method_
 
 
-## Cloning the repository
-
-When cloning the repository to a new location, you should initialize and fetch the submodules:
-
-```bash
-git clone --recursive https://github.com/pauromeu/eigenvalue-pcsc.git
-```
-
-Or, if the repository is already cloned:
-
-```bash
-git submodule update --init --recursive
-```
-
-## Building the Project
-
-### Prerequisites
-Before building, ensure you have the following installed:
-1. CMake (version 3.10 or higher)
-2. A C++ compiler compatible with CMake (GCC, Clang, MSVC, etc.)
-3. Gnuplot (version 3.2 or higher)
-
-This project also makes use of depencies included as submodules. No need to manually install them.
-
-1. Eigen: A C++ template library for linear algebra.
-2. Google Test: A C++ testing framework for unit testing.
-
-### Building Instructions
-
-
-   Run the following command in the root directory of the project to create a build directory and generate the necessary build files:
-   ```bash
-   cmake -S . -B build
-   ```
-   Build the files in the build folder:
-   ```bash
-   cmake --build build
-   ```
-
-### Running the project
-
-   After a successful build, you can find the executable in the build directory. Navigate there and run it:
-   
-   ```bash
-   cd build
-    ./Eigenvalue-PCSC
-   ```
-
-   In the same directory, run the executable generated to run the tets:
-   ```bash
-    ./Eigenvalue-PCSC-tests
-   ```
 ## Generating Documentation
 
 To generate the project's documentation, follow these steps:
@@ -314,3 +321,25 @@ Ensure you have Doxygen installed:
    - After successful generation, the documentation will be available in the directory specified in the `OUTPUT_DIRECTORY` of your Doxyfile.
    - If no output directory is specified, it will be in the same directory as your Doxyfile.
    - Open the `index.html` file in a web browser to view the documentation.
+
+## Issues, known problems and further improvements
+
+### Algorithms
+
+#### QR method
+
+1. **Convergence Check**: The QR method's convergence check is not robust. The solver may fail to converge, yet the results may still be accurate. We need to implement a better convergence check mechanism.
+
+2. **Handling Non-Square Matrices**: Currently, the QR method only works for square matrices. Enhancements are needed to make it compatible with non-square matrices.
+
+3. **Eigenvector Retrieval**: The solver currently does not support retrieving eigenvectors, especially when dealing with complex matrices. Exploring ways to handle complex matrices and retrieve eigenvectors could be beneficial.
+
+4. **Performance**: The QR method can be slow for moderately sized matrices. We consider exploring techniques like parallelization or leveraging matrix properties such as sparsity to improve performance. These optimizations are beyond the scope of this project.
+
+### General
+
+1. **Input Flexibility**: The solver currently supports only MTX matrix files. Enhancing input flexibility by adding support for other file formats or allowing the use of matrices generated by parametric functions would be a valuable addition.
+
+2. **Output Flexibility**: The current output format provides a text file with eigenvalues and eigenvectors along with two plots of the eigenvalues. We consider making the output more flexible to handle different user needs and formats.
+
+We welcome contributions and feedback to help address these issues and improve the solver.

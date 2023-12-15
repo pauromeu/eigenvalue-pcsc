@@ -16,8 +16,8 @@ results/*.dat
 results/*.png
 
 # Re-include figures for README.md
-!results/rand_int_eigenvalues.png
-!results/rand_int_spectrum.png
+!results/can_24_eigenvalues.png
+!results/can_24_spectrum.png
 
 !results/rand_complex_eigenvalues.png
 !results/rand_complex_spectrum.png
