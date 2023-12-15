@@ -63,17 +63,20 @@ The project includes the following key features:
 
 ### Examples
 
-In this section, some examples of usage are provided. All the examples use demo matrices that can be find inside the folder `data/matrix/`.
+In this section, some usage examples are provided. All examples use demonstration matrices that can be found inside the `data/matrix/` folder.
 
 #### 1. Find the largest eigenvalue and its associate eigenvector of a matrix.
 
-To find the dominant eigenvalue (the one with the maximum absolute value) we would use **Power Method**. So, this is the comman we would run from the root folder:
+To find the dominant eigenvalue (the one with the maximum absolute value) we would use the **Power Method**. So, this is the command we would run from the root folder:
 
 ```bash
 build/Eigenvalue-PCSC --matrix=can_24 --solver=pm
 ```
 
-This is the simplest command we can write. We are specifying the only 2 compulsory commands: the matrix and the solver. After running this, the expected output are the files with the larger eigenvalue and its correspondant eigenvalue.
+This is the simplest command we can write. We are specifying the only 2 compulsory commands: the matrix and the solver. After running this, the expected output are the files with the larger eigenvalue and its correspondant eigenvalue. 
+
+Once generated, you should be able to find them in the [results](results/) folder.
+
 
 #### 2. Finding all eigenvalues of a matrix
 
@@ -81,10 +84,10 @@ The only method in our solver that allows you to obtain all eigenvalues at once 
 
 ##### 2.1 Real matrix
 
-Continuing with the same matrix. This way we would find all the eigenvectors.
+Now let's focus on `rand_int` matrix. This is a 20 x 20 matrix that has been generated with random integers. Let's find its eigenvalues:
 
 ```bash
-build/Eigenvalue-PCSC --matrix=can_24 --solver=qr --maxIter=1000 --tol=1e-5
+build/Eigenvalue-PCSC --matrix=rand_int --solver=qr --maxIter=1000 --tol=1e-5
 ```
 
 Note that in this case we added two optional arguments. We will get the plots of the eigenvalues in the complex plane and their spectrum.
@@ -92,13 +95,13 @@ Note that in this case we added two optional arguments. We will get the plots of
 <table>
   <tr>
     <td>
-      <img src="results/can_24_eigenvalues.png" alt="Image 1" style="width: 100%;" />
+      <img src="results/rand_int_eigenvalues.png" alt="Image 1" style="width: 100%;" />
       <p align="center">
         <sup>Figure 1. Complex plane</sup>
       </p>
     </td>
     <td>
-      <img src="results/can_24_spectrum.png" alt="Image 2" style="width: 100%;" />
+      <img src="results/rand_int_spectrum.png" alt="Image 2" style="width: 100%;" />
       <p align="center">
         <sup>Figure 2. Spectrum</sup>
       </p>
@@ -106,18 +109,36 @@ Note that in this case we added two optional arguments. We will get the plots of
   </tr>
 </table>
 
+Again, check the [results](results/) folder to get your solution.
 
 ##### 2.2 Complex matrix
 
-For the complex case, we have to use an input complex matrix. Let's take `qc324` as example. 
+For the complex case, we have to use an input complex matrix. Let's take `rand_complex` as example. 
 
 **Important**: The solver type must be fixed to `complex` or an error will be raised.
 
 ```bash
-build/Eigenvalue-PCSC --matrix=qc324 --solver=qr --type=complex --maxIter=1000 --tol=1e-5
+build/Eigenvalue-PCSC --matrix=rand_complex --solver=qr --type=complex --maxIter=1000 --tol=1e-5
 ```
 
 This is the result to obtain:
+
+<table>
+  <tr>
+    <td>
+      <img src="results/rand_complex_eigenvalues.png" alt="Image 1" style="width: 100%;" />
+      <p align="center">
+        <sup>Figure 3. Complex plane</sup>
+      </p>
+    </td>
+    <td>
+      <img src="results/rand_complex_spectrum.png" alt="Image 2" style="width: 100%;" />
+      <p align="center">
+        <sup>Figure 4. Spectrum</sup>
+      </p>
+    </td>
+  </tr>
+</table>
 
 #### 3. Shifting to get other eigenvectors
 
